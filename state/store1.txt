@@ -1,0 +1,43 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+// import rootReducer from './reducers'; // Import your combined reducers
+import authSlice from './authSlice'; // Import your authentication slice
+import storage from 'redux-persist/lib/storage';
+
+// Configure the Redux store
+const persistConfig = {
+    key: 'root', // Key under which your persisted state will be stored
+    storage: AsyncStorage, // AsyncStorage for React Native
+    whitelist: ['auth'], // List of slices to persist (in this case, 'auth')
+};
+
+
+const rootReducer = combineReducers({
+
+    auth: persistReducer(
+        {
+            key: "auth",
+            storage,
+            blacklist: ["isLoading", "errorMessage", "isError", "isSuccess","_id","email" ],
+        },
+        authSlice
+    ),
+})
+
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = configureStore({
+    reducer: persistedReducer,
+});
+
+// Create a persistor and export the store and persistor
+const persistor = persistStore(store);
+
+export { store, persistor };
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;
+
+

@@ -1,0 +1,137 @@
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import authRequest from '../utils/requests/authReq';
+import { RootState } from './store';
+
+
+
+const initialState: AuthState = {
+    // accessToken: "",
+    // refreshToken: "",
+    _id: "",
+    email: "",
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+};
+
+export const loginUser = createAsyncThunk(
+    "auth/login",
+    async (
+        { Username, password }: { Username: string; password: string },
+        thunkApi
+    ) => {
+        try {
+            const saveResponse = await authRequest.UserLogin(Username, password)
+            if (saveResponse.message === "success") {
+                // console.log( saveResponse.data._id)
+                const UserResponse = await authRequest.GetUserFull(saveResponse.data._id)
+
+                console.log(UserResponse.status)
+                if (UserResponse.status !== 200) {
+                    throw new Error('Login failed');
+                    
+                } else {
+                    const UserData = await UserResponse.data._id
+                    return UserData
+                }
+
+            } else {
+
+                console.log(saveResponse.data.data)
+                switch (saveResponse.data.data) {
+                    case 0:
+                        return thunkApi.rejectWithValue(
+                            "A network error occur. Please check your connection"
+                        );
+                    case 403:
+                        return thunkApi.rejectWithValue(
+                            "Invalid Email or Password"
+                        );
+                    case 400:
+                        return thunkApi.rejectWithValue(
+                            "A bad request occured"
+                        );
+                    case 500:
+                        return thunkApi.rejectWithValue(
+                            "Something went wrong with our servers please try again later"
+                        );
+                    default:
+                        return thunkApi.rejectWithValue(
+                            "An error occured. Please try again later"
+                        );
+                }
+            }
+        } catch (e: any) {
+            // console.log(e);
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+
+);
+
+
+
+const UserInformation = (
+
+    state: AuthState,
+    allUserInformation: UserFull
+) => {
+
+    state.email = allUserInformation._id
+    state._id = allUserInformation._id
+    return state;
+};
+
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers: {
+        setuseId: (state, action: PayloadAction<string | null>) => {
+            state._id = action.payload;
+        },
+        setUseMail: (state, action: PayloadAction<any | null>) => {
+            state.email = action.payload;
+        },
+        // Other authentication-related reducers
+    },
+
+
+    extraReducers: (builder) => {
+        builder
+            .addCase(loginUser.pending, (state) => {
+                // when login is pending
+                state.isLoading = true;
+                state.isSuccess = false;
+                state.isError = false;
+                return state;
+            })
+
+            .addCase(loginUser.rejected, (state: AuthState, action) => {
+                // when login is unsuccessful
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+
+                return state;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                // when login is successful
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state._id= action.payload._id
+                console.log("here")
+                console.log(action.payload);
+                // const allUserInformation = action.payload
+                //     ?.allUserInformation as UserFull;
+                return (state);
+            })
+    
+
+    },
+});
+
+export const { setUseMail, setuseId } = authSlice.actions;
+export const authSelector = (state: RootState) => state.auth;
+
+export default authSlice.reducer;

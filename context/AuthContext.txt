@@ -1,0 +1,15 @@
+import { Children, createContext, ReactNode } from "react";
+
+// Create an initial value for the context
+
+
+
+export const AuthContext = createContext()
+
+export const AuthProvider = ({ children }) => {
+    return (
+        <AuthContext.Provider>
+            {Children}
+        </AuthContext.Provider>
+    )
+}

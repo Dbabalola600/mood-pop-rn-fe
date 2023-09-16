@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "MoodPop",
+    "slug": "mood-pop-rn",
+    "version": "1.0.5",
+    "orientation": "portrait",
+    "icon": "./assets/MoodLogo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/MoodLogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dami600bab.moodpop"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/MoodLogo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.dami600bab.moodpop"
+    },
+    "web": {
+      "favicon": "./assets/MoodLogo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f7d90e3a-fdcf-427f-8780-faada40d9029"
+      }
+    }
+  }
+}
