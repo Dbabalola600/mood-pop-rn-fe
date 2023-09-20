@@ -19,9 +19,6 @@ type FeedProps = {
 
 
 const PostsDisplay = (props: FeedProps) => {
-
-    const [innerScrollViewActive, setInnerScrollViewActive] = useState(false);
-
     return (
         <ScrollView
             style={apptw`mb-5`}
