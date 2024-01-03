@@ -17,13 +17,52 @@ import DashBoardScreen from './screens/DashBoard/DashBoardScreen';
 import Tabs from './Navigation/Tabs';
 import AuthStack from './Navigation/AuthStack';
 import AppStack from './Navigation/AppStack';
+import store from './state/store';
+
+import Toast, { BaseToast, BaseToastProps, ErrorToast } from 'react-native-toast-message';
+import { SWRConfig } from 'swr'
 
 
 
 
 
 
+const toastConfig = {
+  /*
+    Overwrite 'success' type,
+    by modifying the existing `BaseToast` component
+  */
+  success: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: '#0413BB' }}
 
+      contentContainerStyle={{ paddingHorizontal: 10, }}
+      text1Style={{
+        fontSize: 20,
+        fontWeight: '400'
+      }}
+    />
+  ),
+  /*
+    Overwrite 'error' type,
+    by modifying the existing `ErrorToast` component
+  */
+  error: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
+    <ErrorToast
+      {...props}
+      text1Style={{
+        fontSize: 17
+      }}
+      style={{ borderLeftColor: '#e30505' }}
+      contentContainerStyle={{ paddingHorizontal: 10, }}
+      text2Style={{
+        fontSize: 15
+      }}
+    />
+  ),
+
+};
 
 
 
@@ -35,18 +74,33 @@ export default function App() {
 
   return (
 
-    <SafeAreaProvider>
-      <StatusBar />
+    <Provider store={store}>
+
+      <SWRConfig
+        value={{
+          revalidateOnFocus: true,
+          revalidateOnReconnect: true,
+          revalidateIfStale: true,
+          focusThrottleInterval: 5000
+        }}
+      >
+        <SafeAreaProvider>
+          <StatusBar />
 
 
-      <NavigationContainer>
-        {/* <AppStack/> */}
-        <AuthStack />
-      </NavigationContainer>
+          <NavigationContainer>
+            {/* <AppStack/> */}
+            <AuthStack />
+          </NavigationContainer>
+
+        </SafeAreaProvider>
+        <Toast config={toastConfig} />
+
+        </SWRConfig>
 
 
 
-    </SafeAreaProvider>
+    </Provider>
 
 
   );

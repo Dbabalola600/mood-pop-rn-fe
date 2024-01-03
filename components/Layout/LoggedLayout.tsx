@@ -20,7 +20,7 @@ const LoggedInLayout = ({ children }: LoggedInLayoutProp) => {
         >
 
             <ScrollView
-                style={apptw.style(`bg-white  flex-1 shadow-md py-6 pt-10 pb-5`)}
+                style={apptw.style(`bg-[#EEEFFE]  flex-1 shadow-md `)}
                 contentContainerStyle={apptw`flex-grow`}
 
             // edges={["top", "left", "right", "bottom"]}

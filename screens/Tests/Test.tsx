@@ -5,18 +5,9 @@ import LoggedLayout from "../../components/Layout/LoggedLayout";
 
 export default function Test() {
     return (
-        <KeyboardAvoidingView
-            style={tw` flex-1`}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
+     
             <LoggedLayout>
-                <ScrollView
-                    showsVerticalScrollIndicator={true}
-                    style={tw`px-6`}
-                    contentContainerStyle={tw.style(` `, {
-                        flexGrow: 1
-                    })}>
-
+             
                     <View>
                         <Text>
 
@@ -24,8 +15,8 @@ export default function Test() {
                         </Text>
                     </View>
 
-                </ScrollView>
+
             </LoggedLayout>
-        </KeyboardAvoidingView>
+
     )
 }

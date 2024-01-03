@@ -1,76 +1,126 @@
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
-import { View, Text, ImageBackground, Image, Pressable  } from "react-native";
+import { View, Text, ImageBackground, Image, Pressable } from "react-native";
 import AppText from "../components/Display/AppText";
 import apptw from "../utils/lib/tailwind";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { SecureStorage } from "../services/secureStorage";
 
 export default function CustomDrawer(props: any) {
-   
+    const [user, Setuser] = useState<any>([]);
     const navigation = useNavigation()
-   
+
+
+
+    const loggedOut = () => {
+        SecureStorage.getInst().clearAll()
+        navigation.navigate("SignIn")
+
+    }
+
+    useEffect(() => {
+
+
+        const fetchData = async () => {
+            try {
+                let image = await SecureStorage.getInst().getValueFor("image");
+                let username = await SecureStorage.getInst().getValueFor("userName");
+                Setuser({
+                    image: image,
+                    username: username
+                });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+
+
+    }, []);
     return (
         <DrawerContentScrollView
             contentContainerStyle={{
                 // paddingBottom: 40,
                 // paddingTop: 90,
-                backgroundColor: "white",
+                backgroundColor: "#BAC0FA",
+                // display: "flex",
+                height: "100%",
+                // width:"90%",
                 // flex: 1,
                 // justifyContent: "space-between"
             }}
             {...props}
         >
-            <ImageBackground
-
-                style={{
-                    padding: 20, flexDirection: "row"
-                }}
+            <View
+                style={apptw`flex flex-col justify-between  h-[50%]`}
             >
-                {/* <Image
-                     source={require(" ")}
-                    style={{
-                        height: 50,
-                        width: 50,
-                        borderRadius: 40,
-                        marginBottom: 10
-                    }}
-                /> */}
                 <View
-                    style={apptw` mx-5 `}
+
+
+                    style={apptw`mx-auto my-auto `}
                 >
-                    <AppText
-                        style={apptw`text-5 text-white `}
+
+                    <View
+                        style={apptw` `}
                     >
-                        Welcome Dr,
+
+                        {user.image === "" || user.image === undefined ? (
+                            <>
+                                <Ionicons
+                                    name="person-circle-sharp"
+                                    size={100}
+                                    // style={{ marginRight: 15 }}
+                                    color="black"
+                                />
+                            </>
+                        ) : (
+                            <>
+
+                                <Image
+                                    style={apptw`rounded-full w-30 h-30`}
+                                    // height={5}
+                                    source={{ uri: `${user.image}` }}
+                                />
+
+                            </>
+                        )
+                        }
+
+                    </View>
+
+                    <AppText style={apptw`mx-auto`}>
+                        {user.username}
                     </AppText>
-                    <AppText
-                        style={apptw`text-3 text-white `}
+
+
+
+                </View>
+
+                <View
+
+                    style={apptw`flex justify-between`}
+                >
+                    <DrawerItemList {...props} />
+
+                    <Pressable
+                        onPress={loggedOut}
+                        style={apptw`bg- flex-row px-5 pt-5`}
                     >
-                        What do you want today?
-                    </AppText>
+                        <SimpleLineIcons name="logout" size={24} color="black" />
+                        <AppText
+                            style={apptw`mx-10`}
+                        >
+                            Logout
+                        </AppText>
+                    </Pressable>
                 </View>
 
 
 
-            </ImageBackground>
 
-            <View
-            >
-                <DrawerItemList {...props} />
             </View>
-
-            <Pressable
-                onPress={()=>navigation.navigate("SignIn")}
-                    style={apptw`bg-white flex-row px-5 pt-5`}
-                >
-                    <SimpleLineIcons name="logout" size={24} color="black" />
-                    <AppText
-                    style={apptw`mx-10`}
-                    >
-                        Logout
-                    </AppText>
-                </Pressable>
-
 
 
         </DrawerContentScrollView>

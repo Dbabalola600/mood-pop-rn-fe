@@ -80,20 +80,7 @@ const SignUp = ({ navigation }: SignUpScreen) => {
                             isPassword={true}
                         />
 
-                        <View
-                            style={apptw`flex-row`}
-                        >
-                            <Checkbox
-                                style={apptw``}
-                                value={isChecked}
-                                onValueChange={setChecked}
-                                color={isChecked ? '#4630EB' : undefined}
-                            />
-                            <AppText>
-
-                                I accept all the Terms & Conditions
-                            </AppText>
-                        </View>
+                       
 
 
                     </View>
@@ -113,30 +100,7 @@ const SignUp = ({ navigation }: SignUpScreen) => {
                         />
 
 
-                        <View
-                            style={apptw`flex-row justify-between items-center mb-3`}
-                        >
-                            <View
-                                style={{
-                                    borderBlockColor: "gray",
-                                    borderBottomWidth: 1,
-                                    width: 100,
-                                    paddingBottom: 10
-                                }}
-                            />
-                            <AppText style={apptw`font-bold pt-2 mx-2 mx-auto`}>
-
-                                Or sign in with
-                            </AppText>
-                            <View
-                                style={{
-                                    borderBlockColor: "gray",
-                                    borderBottomWidth: 1,
-                                    width: 100,
-                                    paddingBottom: 10
-                                }}
-                            />
-                        </View>
+                      
 
 
 
@@ -150,27 +114,6 @@ const SignUp = ({ navigation }: SignUpScreen) => {
 
 
 
-                        <View>
-                            <Pressable>
-
-                                <View style={apptw`rounded-lg bg-white flex-row justify-center items-center py-3`}>
-
-
-                                    <Image
-                                        source={require("../assets/google_logo.png")}
-                                        style={apptw`mx-0 px-0`}
-                                    />
-                                    <AppText style={apptw`font-bold pt-0 mx-0`}>
-
-
-                                        {" "} Sign Up with Google
-                                    </AppText>
-                                </View>
-
-
-                            </Pressable>
-
-                        </View>
 
                         <AppText style={apptw`self-center text-zinc-400 text-[4]`}>
                             Already have an account?{' '}
