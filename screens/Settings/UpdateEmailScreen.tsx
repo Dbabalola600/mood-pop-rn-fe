@@ -6,13 +6,32 @@ import { Controller, useForm } from "react-hook-form";
 import AppButton from "../../components/Display/AppButton";
 import { useState } from "react";
 import apptw from "../../utils/lib/tailwind";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../allroutes";
+import Toast from "react-native-toast-message";
+import { SecureStorage } from "../../services/secureStorage";
+
+type ScreenProps = NativeStackScreenProps<RootStackParamList, "UpdateEmailScreen">
 
 
-
-export default function UpdateEmailScreen() {
+export default function UpdateEmailScreen({navigation}: ScreenProps) {
     const [isButtonLoading, setButtonLoading] = useState(false)
 
     const { register, handleSubmit, watch, control, formState: { errors } } = useForm()
+   
+    const onSubmit = handleSubmit(async (data) => {
+        console.log(data)
+
+
+        await SecureStorage.getInst().save("email", data.email)
+        Toast.show({
+            type:"success",
+            text1:"Successful"
+        })
+
+        navigation.navigate("DashBoardScreen")
+
+    })
     return (
         <LoggedInLayout>
             <View
@@ -30,6 +49,7 @@ export default function UpdateEmailScreen() {
 
                 <AppButton
                     text={isButtonLoading ? "Loading..." : "Submit"}
+                    onPress={onSubmit}
                 />
 
 

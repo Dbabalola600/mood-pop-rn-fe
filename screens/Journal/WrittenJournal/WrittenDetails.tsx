@@ -7,6 +7,7 @@ import journalRequest from "../../../utils/requests/journalRequest";
 import AppText from "../../../components/Display/AppText";
 import apptw from "../../../utils/lib/tailwind";
 import { FontAwesome } from "@expo/vector-icons";
+import { useJournalStore } from "../../../utils/lib/data/userWrittenJournal";
 
 
 
@@ -18,7 +19,7 @@ type Journal = {
     id: string,
     title: string,
     content: string,
-    Date: string
+    date: string |any
 }
 
 type Props = {
@@ -31,14 +32,15 @@ const WrittenDetails: React.FC<Props> = ({ route }) => {
     const [journ, setJournal] = useState<Journal>()
 
 
-
+    const theData = useJournalStore((state: any) => state.journal)
 
     const showInfo = async () => {
         setLoading(true)
 
-        const response = await journalRequest.getJournalNote(route.params.id)
-        setJournal(response)
 
+        console.log(theData[route.params.id])
+
+        setJournal(theData[route.params.id])
 
         setLoading(false)
     }
@@ -87,7 +89,11 @@ const WrittenDetails: React.FC<Props> = ({ route }) => {
                 <View
                     style={apptw`mx-5`}>
                     <AppText>
-                        Date: {journ?.Date}
+                        Date: {new Date(journ?.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}
                     </AppText>
 
 

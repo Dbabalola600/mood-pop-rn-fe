@@ -31,11 +31,7 @@ const Tabs = () => {
 
 
 
-    const showNotif = async () => {
-        let id = await SecureStorage.getInst().getValueFor("userId");
-        const response = await userRequest.countNotification(id)
-        setCount(response)
-    }
+  
 
     useEffect(() => {
 
@@ -51,7 +47,7 @@ const Tabs = () => {
 
         fetchData();
 
-        showNotif()
+
     }, [isFocused]);
 
 

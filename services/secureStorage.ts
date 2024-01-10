@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 
-type SecureStorageKeys = "userId"|"email"| "image"|"userName"
+type SecureStorageKeys = "email"| "image"|"userName" |"password"
 
 
 
@@ -36,7 +36,7 @@ export class SecureStorage {
 
     async clearAll(): Promise<boolean> {
         try {
-          const keys: SecureStorageKeys[] = ["userId", "email", "image","userName"]; // Add other keys if needed
+          const keys: SecureStorageKeys[] = ["email", "image","userName", "password"]; // Add other keys if needed
     
           // Iterate over keys and remove them
           await Promise.all(keys.map(async (key) => await SecureStore.deleteItemAsync(key)));

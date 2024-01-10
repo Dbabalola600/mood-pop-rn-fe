@@ -6,13 +6,32 @@ import { Controller, useForm } from "react-hook-form";
 import AppButton from "../../components/Display/AppButton";
 import { useState } from "react";
 import apptw from "../../utils/lib/tailwind";
+import Toast from "react-native-toast-message";
+import { SecureStorage } from "../../services/secureStorage";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../allroutes";
+
+type ScreenProps = NativeStackScreenProps<RootStackParamList, "UpdatePasswordScreen">
 
 
-
-export default function UpdatePasswordScreen() {
+export default function UpdatePasswordScreen({navigation}: ScreenProps) {
     const [isButtonLoading, setButtonLoading] = useState(false)
 
     const { register, handleSubmit, watch, control, formState: { errors } } = useForm()
+
+    const onSubmit = handleSubmit(async (data) => {
+        console.log(data)
+
+
+        await SecureStorage.getInst().save("password", data.password)
+        Toast.show({
+            type:"success",
+            text1:"Successful"
+        })
+
+        navigation.navigate("DashBoardScreen")
+
+    })
     return (
         <LoggedInLayout>
             <View
@@ -30,6 +49,7 @@ export default function UpdatePasswordScreen() {
 
                 <AppButton
                     text={isButtonLoading ? "Loading..." : "Submit"}
+                    onPress={onSubmit}
                 />
 
 

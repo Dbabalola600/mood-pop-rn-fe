@@ -14,6 +14,7 @@ import apptw from "../../utils/lib/tailwind";
 import UserNotification from "../../components/Display/UserNotification";
 import Toast from "react-native-toast-message";
 import Loader from "../../components/Display/Loader";
+import { usersArr } from "../../utils/lib/data/MockData";
 
 
 
@@ -36,15 +37,14 @@ type userNotifInfo = {
 export default function NotificationScreen() {
     const [isLoading, setLoading] = useState(false)
     const isFocused = useIsFocused()
-    const [isUser, setUser] = useState<userNotifInfo[]>([])
+    const [isUser, setUser] = useState<any[]>([])
 
 
     const showInfo = async () => {
         setLoading(true)
-        const response = await followRequest.getFollowRequests()
+        // const response = await followRequest.getFollowRequests()
 
-        console.log(response.data)
-        setUser(response.data)
+        setUser(usersArr.slice(0,3))
         setLoading(false)
     }
 
@@ -59,26 +59,14 @@ export default function NotificationScreen() {
 
     const AcceptReq = async (fId: any, ReqId: any) => {
 
-        const userId = await SecureStorage.getInst().getValueFor("userId")
 
-        const body = {
-            userId: userId,
-            fId: fId,
-            ReqId: ReqId
-        }
-        const Response = await followRequest.acceptFollowRequest(userId, fId, ReqId)
-        if (Response.status === 200 || 202) {
-            Toast.show({
-                type: "success",
-                text1: " Accepted"
-            })
-            showInfo()
-        } else {
-            Toast.show({
-                type: "error",
-                text1: " UnknownError"
-            })
-        }
+
+        Toast.show({
+            type: "success",
+            text1: " Accepted"
+        })
+        showInfo()
+
     }
 
 
@@ -115,17 +103,17 @@ export default function NotificationScreen() {
                             <View
                                 style={apptw`px-1 mt-7`}
                             >
-                                {isUser.map((info) => (
+                                {isUser.map((info, index) => (
 
                                     <View
-                                        key={info.peep._id}
+                                        key={index}
                                     >
 
                                         <UserNotification
-                                            Acceptclicky={() => { AcceptReq(info.user._id, info.peep._id) }}
+                                            Acceptclicky={() => { AcceptReq("", "") }}
                                             Declineclicky={() => { DecReq() }}
-                                            image={info.user.image}
-                                            name={info.user.UserName}
+                                            image={info.image}
+                                            name={info.name}
                                         />
 
 

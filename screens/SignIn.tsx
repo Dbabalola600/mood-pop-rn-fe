@@ -15,6 +15,7 @@ import { authSelector, loginUser } from "../state/userSlice";
 import { AppDispatch } from "../state/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Toast from "react-native-toast-message";
+import { SecureStorage } from "../services/secureStorage";
 
 
 
@@ -27,11 +28,8 @@ type SignInScreen = NativeStackScreenProps<
 const SignIn = ({ navigation }: SignInScreen) => {
     const [isButtonLoading, setButtonLoading] = useState(false)
     const dispatch = useDispatch<AppDispatch>();
-    const { user} = useSelector(authSelector);
-    const { register, handleSubmit, watch, control, formState: { errors } } = useForm<loginwithEmailFormType>({
-       
-        resolver: zodResolver(loginwithEmailSchema),
-    })
+    const { user } = useSelector(authSelector);
+    const { register, handleSubmit, watch, control, setError, formState: { errors } } = useForm()
 
 
     const navigatetoDashBoard = () => {
@@ -46,35 +44,34 @@ const SignIn = ({ navigation }: SignInScreen) => {
     const navigatetoForgotPassword = () => {
         navigation.navigate("ForgotPassword")
     }
-    useEffect(() => {
-        if (user.isSuccess && !user.isLoading) {
-            Toast.show({
-                type:"success",
-                text1:`Successful Login`
-            })
-            navigatetoDashBoard()
-            // console.log("success")
-        }
-        if (user.isError && !user.isLoading) {
-            // alert(user.loginErrorMessage);
-            Toast.show({
-                type:"error",
-                text1:`${user.loginErrorMessage}`
-            })
-        }
 
-    }, [user.isError, user.isLoading, user.isSuccess,])
 
     const onSubmit = handleSubmit(async (data) => {
-      
+
         setButtonLoading(true)
 
+        const userN = await SecureStorage.getInst().getValueFor("userName")
+        const pass = await SecureStorage.getInst().getValueFor("password")
+        console.log(data)
+        if (data.userName !== userN) {
+            setError("userName", {
+                type: "manual",
+                message: "Invalid username"
+            })
+        } if (data.password !== pass) {
+            setError("password", {
+                type: "manual",
+                message: "Invalid password"
+            })
+        }else if (data.userName === userN && data.password === pass){
+            Toast.show({
+                type:"success",
+                text1:"Success"
+            })
+            navigatetoDashBoard()
+        }
 
-        const response = await dispatch(
-            loginUser({ password: data.password, userName: data.userName })
-        );
 
-       
         setButtonLoading(false)
     })
 
@@ -103,30 +100,30 @@ const SignIn = ({ navigation }: SignInScreen) => {
 
 
                         <AppTextField
-                            title="Username/Email"
+                            title="Username"
                             control={control}
-                            errorMessage={errors.userName?.message}
+                            errorMessage={errors?.userName?.message}
                             validationName="userName"
-                            placeholder="username/email"
+                            placeholder="username"
                         />
 
                         <AppTextField
                             title="Password"
-
+                            errorMessage={errors?.password?.message}
                             validationName="password"
                             control={control}
                             placeholder="***********"
                             isPassword={true}
                         />
 
-                        <View>
+                        {/* <View>
                             <PressAppText
                                 // onPress={navigatetoForgotPassword}
                                 style={apptw`text-black `}
                             >
                                 Forgot Password?
                             </PressAppText>
-                        </View>
+                        </View> */}
 
                         <AppButton
                             buttonStyle={apptw`  my-6`}

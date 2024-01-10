@@ -10,7 +10,7 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons"
 type FeedProps = {
     image: any,
     name: string | any,
-    date: string | any,
+    date: Date | any,
     content: string | any
 
 }

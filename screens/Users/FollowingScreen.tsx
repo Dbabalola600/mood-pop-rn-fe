@@ -13,6 +13,7 @@ import UserSearchResult from "../../components/Display/UserSearchResult";
 import apptw from "../../utils/lib/tailwind";
 import People1 from "../../assets/People1.svg"
 import followRequest from "../../utils/requests/followRequest";
+import { followingArr } from "../../utils/lib/data/MockData";
 
 
 interface MyData {
@@ -46,15 +47,15 @@ export default function FollowingScreen() {
     const [isLoading, setLoading] = useState(false)
     const [isButtLoading, setButtLoading] = useState(false)
     const isFocused = useIsFocused()
-    const [isUser, setUser] = useState<UserIn[]>([])
+    const [isUser, setUser] = useState<any[]>([])
 
 
     const showInfo = async () => {
 
         setLoading(true)
-        const response = await followRequest.GetFollowing()
 
-        setUser(response)
+
+        setUser(followingArr)
 
         setLoading(false)
 
@@ -87,15 +88,15 @@ export default function FollowingScreen() {
                         </> :
 
                         <>
-                            {isUser.map((info: any) => (
+                            {isUser.map((info: any, index) => (
                                 <View
-                                    key={info._id}
+                                    key={index}
                                 >
 
                                     <UserSearchResult
                                         clicky={() => { }}
                                         image={info.image}
-                                        name={info.UserName}
+                                        name={info.name}
                                         text={"Remove"}
                                     />
 

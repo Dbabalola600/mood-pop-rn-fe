@@ -13,6 +13,7 @@ import { useSWRNativeRevalidate } from "@nandorojo/swr-react-native"
 import { BASE_URL } from "../../utils/lib/envvar";
 import useSWR from "swr";
 import Loader from "../../components/Display/Loader";
+import { usersArr } from "../../utils/lib/data/MockData";
 
 
 
@@ -42,7 +43,7 @@ const FindScreen: React.FC<Props> = ({ route }) => {
     const [isButtLoading, setButtLoading] = useState(false)
     const navigation = useNavigation()
     const isFocused = useIsFocused()
-    // const [find, setFind] = useState("")
+    const [users, setUsers] = useState<any[]>([])
 
 
     const find = route.params.find
@@ -58,32 +59,29 @@ const FindScreen: React.FC<Props> = ({ route }) => {
 
 
 
-    // console.log(data?.data.data)
+    const showInfo = async () => {
+        console.log(usersArr)
+        setUsers(
+            usersArr.filter(item => item.name.toLowerCase().includes(find.toLowerCase()))
+        )
+    }
+
+
+    useEffect(() => {
+        showInfo()
+    }, [isFocused])
 
     const SendReq = async (id: any) => {
         setButtLoading(true)
-        const userId = await SecureStorage.getInst().getValueFor("userId")
+      
 
 
-        const body = {
-            toId: id,
-            fromId: userId
-        }
+        Toast.show({
+            type: 'success',
+            text1: 'Request Sent',
+        }),
+            navigation.goBack()
 
-        const response = await followRequest.newFollowRequest(body.toId, body.fromId)
-        if (response.status === 200 || response.status === 202) {
-
-            Toast.show({
-                type: 'success',
-                text1: 'Request Sent',
-            }),
-                navigation.navigate("DashBoardScreen")
-        } else {
-            Toast.show({
-                type: 'error',
-                text1: 'Unknown Error',
-            })
-        }
 
         setButtLoading(false)
     }
@@ -105,7 +103,7 @@ const FindScreen: React.FC<Props> = ({ route }) => {
 
 
 
-                        {data?.data.data.length < 1 ?
+                        {users.length < 1 ?
                             <>
 
                                 <View>
@@ -122,16 +120,16 @@ const FindScreen: React.FC<Props> = ({ route }) => {
 
                                 <View
                                 >
-                                    {data?.data.data.map((info: any, index: any) => (
+                                    {users.map((info: any, index: any) => (
 
                                         <View
-                                            key={info._id}
+                                            key={index}
                                         >
                                             <UserSearchResult
                                                 text={isButtLoading ? "sending..." : "Request"}
-                                                clicky={() => { SendReq(info._id) }}
+                                                clicky={() => { SendReq(index) }}
                                                 image={info.image}
-                                                name={info.UserName}
+                                                name={info.name}
                                             />
 
 

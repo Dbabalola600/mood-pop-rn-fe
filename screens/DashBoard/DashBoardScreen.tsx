@@ -8,20 +8,21 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../allroutes"
 import Blankcontent from "../../assets/Blankcontent.svg"
 import PostsDisplay from "../../components/Display/PostsDisplay"
-import { postsArr } from "../../utils/lib/MockData"
+import { postsArr } from "../../utils/lib/data/MockData"
 import { SecureStorage } from "../../services/secureStorage"
 import { useIsFocused } from "@react-navigation/native"
 import postRequest from "../../utils/requests/postRequest"
 import Loader from "../../components/Display/Loader"
+import { usePostStore } from "../../utils/lib/data/userPost"
 
 type DashBoardProps = NativeStackScreenProps<RootStackParamList, "DashBoardScreen">
 
 
 type Posts = {
-    userId: string,
-    post: string
-    category: string
-    date: string
+    // userId: string,
+    title: string
+    content: string
+    date: Date
 }
 
 function DashBoardScreen({ navigation }: DashBoardProps) {
@@ -75,20 +76,22 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
         fetchData();
         setGreetingBasedOnTime();
 
-    }, []);
+    }, [isFocused]);
 
+    const userPost = usePostStore((state: any) => state.post)
+    const clear = usePostStore((state: any) => state.clearPosts)
 
     const showInfo = async () => {
-        setLoading(true)
-        const response = await postRequest.GetUserPosts()
-        // console.log(response.data.data[0])
+        console.log(userPost)
 
-        setPost(response.data.data)
-        setLoading(false)
+        setPost(userPost)
     }
+
+
 
     useEffect(() => {
         showInfo()
+        // clear()
     }, [isFocused])
 
 
@@ -152,8 +155,12 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
                                             key={index}
                                         >
                                             <PostsDisplay
-                                                content={item.category}
-                                                date={item.date}
+                                                content={item.content}
+                                                date={new Date(item.date).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric'
+                                                  })}
                                                 image={user.image}
                                                 name={user.userName}
                                             />

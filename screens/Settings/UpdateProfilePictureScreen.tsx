@@ -9,11 +9,20 @@ import apptw from "../../utils/lib/tailwind";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import * as ImageManipulator from 'expo-image-manipulator';
+import Toast from "react-native-toast-message";
+import { SecureStorage } from "../../services/secureStorage";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../allroutes";
 
-export default function UpdateProfilePictureScreen() {
+
+
+
+type ScreenProps = NativeStackScreenProps<RootStackParamList, "UpdateProfilePictureScreen">
+
+export default function UpdateProfilePictureScreen({navigation}: ScreenProps) {
     const [isButtonLoading, setButtonLoading] = useState(false)
     const [image, setImage] = useState<string | null>(null);
-    const [base64Image, setBase64Image] = useState<string | null>(null);
+    const [base64Image, setBase64Image] = useState<string | null>("");
     const { register, handleSubmit, watch, control, formState: { errors } } = useForm()
 
 
@@ -63,10 +72,26 @@ export default function UpdateProfilePictureScreen() {
 
 
 
+
+    const onSubmit = handleSubmit(async (data) => {
+        // console.log(data)
+
+
+        await SecureStorage.getInst().save("image", base64Image)
+        Toast.show({
+            type:"success",
+            text1:"Successful"
+        })
+
+        navigation.navigate("DashBoardScreen")
+
+    })
     const submitItem = () => {
         const image = {
             image: base64Image
         }
+
+
 
 
         console.log(image)
@@ -102,9 +127,9 @@ export default function UpdateProfilePictureScreen() {
                     />
 
                     {
-                        base64Image &&
+                        image &&
                         <AppButton
-                            onPress={submitItem}
+                            onPress={onSubmit}
 
                             text={isButtonLoading ? "Loading..." : "Submit"}
                         />

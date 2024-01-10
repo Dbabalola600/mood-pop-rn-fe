@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import audioRequest from "../../../utils/requests/audioRequests";
 import Toast from "react-native-toast-message";
 import zlib from 'zlib';
+import { useAudioStore } from "../../../utils/lib/data/audioJournal";
 
 
 type Props = NativeStackScreenProps<
@@ -78,7 +79,7 @@ const RecordJournalScreen = ({ navigation }: Props) => {
             console.log('Starting Recording')
 
 
-            
+
 
             await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY); // quality
             await newRecording.startAsync();
@@ -96,7 +97,7 @@ const RecordJournalScreen = ({ navigation }: Props) => {
             encoding: FileSystem.EncodingType.Base64,
 
 
-          
+
         });
         return data;
     };
@@ -133,7 +134,7 @@ const RecordJournalScreen = ({ navigation }: Props) => {
                 // This is for simply playing the sound back
                 const playbackObject = new Audio.Sound();
                 await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}` });
-                await playbackObject.playAsync();
+                // await playbackObject.playAsync();
 
 
 
@@ -143,10 +144,7 @@ const RecordJournalScreen = ({ navigation }: Props) => {
                 setRecordingStatus('stopped');
 
 
-                //converting to base 64
 
-                const base64Recording = await fileToBase64(newUri)
-                setBase(`data:audio/aac;base64,${base64Recording}`)
 
                 return newUri;
             }
@@ -161,11 +159,13 @@ const RecordJournalScreen = ({ navigation }: Props) => {
 
 
 
-
+const [audiPath, setPath] = useState("")
     async function handleRecordButtonPress() {
         if (recording) {
             const audioUri = await stopRecording(recording);
             if (audioUri) {
+                setPath(audioUri)
+
                 console.log('Saved audio file to', audioUri);
 
             }
@@ -178,29 +178,31 @@ const RecordJournalScreen = ({ navigation }: Props) => {
 
 
 
-
+    const addJournal = useAudioStore((state: any) => state.addToJournal)
 
     const onSubmit = handleSubmit(async (data) => {
 
-        // console.log(isBase)
-
-        const response = await audioRequest.CreateJNote(data.title, isBase)
-
-        if(response.status === 200){
-            Toast.show({
-                type: "success",
-                text1: "Good Job"
-            })
-            navigation.navigate("JournalScreen")
-        }else{
-            Toast.show({
-                type: "error",
-                text1: "Unknown Error"
-            })
+        const info = {
+            title: data.title,
+            date: new Date(),
+            content: audiPath
         }
 
 
-      
+        console.log(info)
+
+        addJournal(info)
+        Toast.show({
+            type: "success",
+            text1: "Good Job"
+        })
+
+        navigation.goBack()
+
+
+
+
+
     });
 
     return (

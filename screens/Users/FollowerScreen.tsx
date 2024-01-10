@@ -8,6 +8,7 @@ import Loader from "../../components/Display/Loader";
 import UserSearchResult from "../../components/Display/UserSearchResult";
 import apptw from "../../utils/lib/tailwind";
 import People2 from "../../assets/People2.svg"
+import { followerArr } from "../../utils/lib/data/MockData";
 
 
 
@@ -29,15 +30,15 @@ export default function FollowerScreen() {
     const [isLoading, setLoading] = useState(false)
     const [isButtLoading, setButtLoading] = useState(false)
     const isFocused = useIsFocused()
-    const [isUser, setUser] = useState<UserIn[]>([])
+    const [isUser, setUser] = useState<any[]>([])
 
 
     const showInfo = async () => {
 
         setLoading(true)
-        const response = await followRequest.GetFollowers()
 
-        setUser(response)
+
+        setUser(followerArr)
 
         setLoading(false)
 
@@ -69,15 +70,15 @@ export default function FollowerScreen() {
                     </> :
 
                     <>
-                        {isUser.map((info: any) => (
+                        {isUser.map((info: any, index) => (
                             <View
-                                key={info._id}
+                                key={index}
                             >
 
                                 <UserSearchResult
                                     clicky={() => { }}
                                     image={info.image}
-                                    name={info.UserName}
+                                    name={info.name}
                                     text={"Remove"}
                                 />
 

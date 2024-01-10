@@ -27,25 +27,32 @@ export default function ContactSupportScreen({ navigation }: MyProps) {
         setButtonLoading(true)
 
 
-        const response = await settingsRequest.contactSupport(data.title, data.details)
+        // const response = await settingsRequest.contactSupport(data.title, data.details)
 
-        switch (response.data.status) {
-            case 200: {
+        // switch (response.data.status) {
+        //     case 200: {
 
-                Toast.show({
-                    type: "success",
-                    text1: "Sent"
-                })
-                navigation.navigate("DashBoardScreen")
-                break;
-            }
-            default: {
-                Toast.show({
-                    type: "error",
-                    text1: "Unknown Error"
-                })
-            }
-        }
+        //         Toast.show({
+        //             type: "success",
+        //             text1: "Sent"
+        //         })
+        //         navigation.navigate("DashBoardScreen")
+        //         break;
+        //     }
+        //     default: {
+        //         Toast.show({
+        //             type: "error",
+        //             text1: "Unknown Error"
+        //         })
+        //     }
+        // }
+
+
+        Toast.show({
+            type: "success",
+            text1: "Sent"
+        })
+        navigation.navigate("DashBoardScreen")
 
         // console.log(response.data.status)
         setButtonLoading(false)

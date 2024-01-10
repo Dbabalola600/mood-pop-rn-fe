@@ -3,18 +3,18 @@ import { View, Text, ImageBackground, Image, Pressable } from "react-native";
 import AppText from "../components/Display/AppText";
 import apptw from "../utils/lib/tailwind";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { SecureStorage } from "../services/secureStorage";
 
 export default function CustomDrawer(props: any) {
     const [user, Setuser] = useState<any>([]);
     const navigation = useNavigation()
-
+    const isFocused = useIsFocused()
 
 
     const loggedOut = () => {
-        SecureStorage.getInst().clearAll()
+        // SecureStorage.getInst().clearAll()
         navigation.navigate("SignIn")
 
     }
@@ -38,7 +38,7 @@ export default function CustomDrawer(props: any) {
         fetchData();
 
 
-    }, []);
+    }, [isFocused]);
     return (
         <DrawerContentScrollView
             contentContainerStyle={{

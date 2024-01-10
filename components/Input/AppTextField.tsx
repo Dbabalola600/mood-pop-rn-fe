@@ -22,7 +22,7 @@ type AppTextFieldProps = {
     control?: any;
     placeholder?: string;
     autoFocus?: boolean;
-    errorMessage?: string;
+    errorMessage?: string | any;
     keyboardType?: KeyboardTypeOptions;
     containerStyle?: Style;
     title?: string;

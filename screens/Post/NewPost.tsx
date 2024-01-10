@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
 import postRequest from "../../utils/requests/postRequest";
+import { usePostStore } from "../../utils/lib/data/userPost";
 
 type Props = NativeStackScreenProps<
     RootStackParamList,
@@ -23,28 +24,31 @@ const NewPost = ({ navigation }: Props) => {
     const [isLoading, setLoading] = useState(false)
     const { register, handleSubmit, watch, control, formState: { errors } } = useForm()
 
-
+    const addPost = usePostStore((state: any) => state.addToPost)
 
     const onSubmit = handleSubmit(async (data) => {
         // console.log(data)
         setLoading(true)
 
-        const response = await postRequest.CreatePost(data.title, data.content)
-        // console.log(response.data.status)
 
-        if (response.data.status === 200) {
-            Toast.show({
-                type: "success",
-                text1: "Sucessful"
-            })
-            navigation.goBack()
-        } else {
-            Toast.show({
-                type: "error",
-                text1: "Unknown Error"
-            })
-
+        const info = {
+            title: data.title,
+            content: data.content,
+            date: new Date()
         }
+
+
+        console.log(info)
+
+
+        addPost(info)
+
+
+        Toast.show({
+            type: "success",
+            text1: "Sucessful"
+        })
+        navigation.goBack()
 
 
         setLoading(false)

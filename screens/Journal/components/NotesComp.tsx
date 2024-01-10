@@ -1,7 +1,7 @@
 import { ScrollView, View } from "react-native";
 import AppText from "../../../components/Display/AppText";
 import apptw from "../../../utils/lib/tailwind";
-import { JournalArr } from "../../../utils/lib/MockData";
+import { JournalArr } from "../../../utils/lib/data/MockData";
 import JournalDisplay from "../../../components/Display/JournalDisplay";
 import PressAppText from "../../../components/Display/PressAppText";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -9,12 +9,13 @@ import { useEffect, useState } from "react";
 import journalRequest from "../../../utils/requests/journalRequest";
 import Loader from "../../../components/Display/Loader";
 import BlankNote from "../../../assets/BlankNote.svg"
+import { useJournalStore } from "../../../utils/lib/data/userWrittenJournal";
 
 type Journal = {
     id: string,
     title: string,
     content: string,
-    Date: string
+    date: string
 }
 
 export default function NotesComp() {
@@ -24,13 +25,14 @@ export default function NotesComp() {
     const [journ, setJournal] = useState<Journal[]>([])
 
 
+    const Userjournals = useJournalStore((state: any) => state.journal)
+
 
     const showInfo = async () => {
         setLoading(true)
 
-        const response = await journalRequest.getJournal()
-        setJournal(response.data)
-
+        // console.log(Userjournals)
+        setJournal(Userjournals)
 
         setLoading(false)
     }
@@ -47,6 +49,8 @@ export default function NotesComp() {
 
     const NavClick = (id: string) => {
         navigation.navigate("WrittenDetails", { id: id })
+
+        // console.log(id)
     }
 
 
@@ -102,13 +106,17 @@ export default function NotesComp() {
                                 showsVerticalScrollIndicator
                                 style={apptw`h-[50]`}
                             >
-                                {journ.slice(0, 4).map((items, index) => (
+                                {journ.slice(0, 4).map((items, index:any) => (
                                     <View
                                         key={index}
                                     >
                                         <JournalDisplay
-                                            onPress={() => NavClick(items.id)}
-                                            date={items.Date}
+                                            onPress={() => NavClick(index)}
+                                            date={new Date(items.date).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric'
+                                              })}
                                             title={items.title}
                                         />
 

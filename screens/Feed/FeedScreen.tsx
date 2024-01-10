@@ -6,7 +6,7 @@ import AppButtonWIcon from "../../components/Display/AppButtonWIcon";
 import apptw from "../../utils/lib/tailwind";
 import BlankFeed from "../../assets/BlankFeed.svg"
 import PostsDisplay from "../../components/Display/PostsDisplay";
-import { postsArr } from "../../utils/lib/MockData";
+import { postsArr } from "../../utils/lib/data/MockData";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../allroutes";
 import { useEffect, useState } from "react";
@@ -20,27 +20,27 @@ import Loader from "../../components/Display/Loader";
 type FeedProps = NativeStackScreenProps<RootStackParamList, "FeedScreen">
 
 
-type Post = {
-    post: {
-        userId: string,
-        post: string
-        category: string
-        date: string
-    },
-    user: {
-        _id: string,
-        UserName: string,
-        email: string,
-        isVerified: string,
-        image: string
-    }
+// type Post = {
+//     post: {
+//         userId: string,
+//         post: string
+//         category: string
+//         date: string
+//     },
+//     user: {
+//         _id: string,
+//         UserName: string,
+//         email: string,
+//         isVerified: string,
+//         image: string
+//     }
 
-}
+// }
 
 
 
 export default function FeedScreen({ navigation }: FeedProps) {
-    const [post, setPost] = useState<Post[]>([])
+    const [post, setPost] = useState<any[]>([])
     const [isLoading, setLoading] = useState(false)
     const isFocused = useIsFocused();
 
@@ -48,10 +48,8 @@ export default function FeedScreen({ navigation }: FeedProps) {
     const showInfo = async () => {
         setLoading(true)
 
-        const response = await postRequest.GetFollowingPost()
-        // console.log(response)
 
-        setPost(response)
+        setPost(postsArr)
 
         setLoading(false)
     }
@@ -146,10 +144,10 @@ export default function FeedScreen({ navigation }: FeedProps) {
 
                                         >
                                             <PostsDisplay
-                                                content={info.post.category}
-                                                date={info.post.date}
-                                                image={info.user.image}
-                                                name={info.user.UserName}
+                                                content={info.post}
+                                                date={info.date}
+                                                image={info.image}
+                                                name={info.user}
                                             />
                                         </View>
                                     ))}

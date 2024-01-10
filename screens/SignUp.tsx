@@ -10,6 +10,9 @@ import apptw from "../utils/lib/tailwind";
 import { RootStackParamList } from "./allroutes";
 import tw from "twrnc"
 import { Checkbox } from "expo-checkbox";
+import { useForm } from "react-hook-form";
+import { SecureStorage } from "../services/secureStorage";
+import Toast from "react-native-toast-message";
 
 type SignUpScreen = NativeStackScreenProps<
     RootStackParamList,
@@ -28,8 +31,24 @@ const SignUp = ({ navigation }: SignUpScreen) => {
 
     const [isChecked, setChecked] = useState(false);
 
+    const { register, handleSubmit, watch, control, formState: { errors } } = useForm()
+ 
 
+    const onSubmit = handleSubmit(async (data)=>{
+        setButtonLoading(true)
+        console.log(data)
 
+        await SecureStorage.getInst().save("email", data.email)
+        await SecureStorage.getInst().save("password", data.password)
+        await SecureStorage.getInst().save("userName", data.userName)
+        Toast.show({
+            type:"success",
+            text1:"Success"
+        })
+
+        navigateToSignIn()
+        setButtonLoading(false)
+    })
 
 
     return (
@@ -56,21 +75,19 @@ const SignUp = ({ navigation }: SignUpScreen) => {
 
 
                         <AppTextField
-                            title="Firstname"
+                            title="Username"
                             validationName="userName"
-                            placeholder="Firstname"
+                            placeholder="username"
+                            control={control}
                         />
 
-                        <AppTextField
-                            title="Firstname"
-                            validationName="userName"
-                            placeholder="lastname"
-                        />
+                      
 
                         <AppTextField
                             title="Email"
                             validationName="email"
                             placeholder="example@gmail.com"
+                            control={control}
                         />
 
                         <AppTextField
@@ -78,6 +95,7 @@ const SignUp = ({ navigation }: SignUpScreen) => {
                             validationName="password"
                             placeholder="***********"
                             isPassword={true}
+                            control={control}
                         />
 
                        
@@ -94,7 +112,7 @@ const SignUp = ({ navigation }: SignUpScreen) => {
                         <AppButton
                             buttonStyle={apptw`  my-6`}
                             text={isButtonLoading ? "Loading..." : "Register"}
-                            onPress={navigateToSignIn}
+                            onPress={onSubmit}
                         // text="Create Account"
 
                         />
