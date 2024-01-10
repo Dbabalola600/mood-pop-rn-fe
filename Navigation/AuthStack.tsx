@@ -50,7 +50,7 @@ const AuthStack = () => {
                 },
                 headerShadowVisible: false
             }}
-            initialRouteName='DashBoardScreen'
+            initialRouteName='Welcome'
 
         >
             <Stack.Screen

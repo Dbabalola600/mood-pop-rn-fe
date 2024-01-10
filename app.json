@@ -1,13 +1,22 @@
 {
   "expo": {
     "name": "MoodPop",
-
+    "icon": "./assets/MoodLogo.png",
     "extra": {
       "eas": {
         "projectId": "c0a34bdc-a261-4aaa-b56e-df354dc6c4cf"
       }
     },
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/MoodLogo.png",
+      "resizeMode": "contain"
+    },
     "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/MoodLogo.png",
+        "backgroundColor": "#ffffff"
+      },
       "package": "com.dami600b.mood_pop_rn"
     },
     "ios": {
