@@ -8,6 +8,7 @@ import AppText from "../../../components/Display/AppText";
 import apptw from "../../../utils/lib/tailwind";
 import { FontAwesome } from "@expo/vector-icons";
 import { useJournalStore } from "../../../utils/lib/data/userWrittenJournal";
+import Toast from "react-native-toast-message";
 
 
 
@@ -33,7 +34,7 @@ const WrittenDetails: React.FC<Props> = ({ route }) => {
 
 
     const theData = useJournalStore((state: any) => state.journal)
-
+    const removeData = useJournalStore((state: any) => state.removeFromJournal)
     const showInfo = async () => {
         setLoading(true)
 
@@ -55,7 +56,18 @@ const WrittenDetails: React.FC<Props> = ({ route }) => {
     }, [isFocused]);
 
 
-    console.log(journ)
+    const Remove_Note = (id: any) => {
+        // console.log(id)
+
+
+        removeData({index: id})
+        Toast.show({
+            type:"success",
+            text1:"sucess"
+        })
+
+        navigation.goBack()
+    }
     return (
         <BasicBackButtonLayout>
             <View>
@@ -65,7 +77,7 @@ const WrittenDetails: React.FC<Props> = ({ route }) => {
                 </View>
 
                 <Pressable
-                // onPress={toggleModal}
+                onPress={Remove_Note}
                 >
                     <View style={apptw`flex-row justify-end mx-5 mb-1`}>
                         <View style={apptw`rounded-full bg-white  w-10 h-10`}>

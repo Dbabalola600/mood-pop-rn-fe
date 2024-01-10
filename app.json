@@ -1,12 +1,7 @@
 {
   "expo": {
-    "name": "MoodPop",
-    "icon": "./assets/MoodLogo.png",
-    "extra": {
-      "eas": {
-        "projectId": "c0a34bdc-a261-4aaa-b56e-df354dc6c4cf"
-      }
-    },
+    "name": "MoodPop Demo",
+    "icon": "./assets/MoodLogo.svg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/MoodLogo.png",
@@ -17,10 +12,12 @@
         "foregroundImage": "./assets/MoodLogo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dami600b.mood_pop_rn"
+      "package": "com.dami600b.moodpop"
     },
-    "ios": {
-      "bundleIdentifier": "dami"
+    "extra": {
+      "eas": {
+        "projectId": "b03bac47-078d-4bdd-bdca-55b669861ec3"
+      }
     }
   }
 }

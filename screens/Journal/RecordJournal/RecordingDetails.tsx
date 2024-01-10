@@ -13,6 +13,7 @@ import { Audio, } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { decode } from 'base-64';
 import { useAudioStore } from "../../../utils/lib/data/audioJournal";
+import Toast from "react-native-toast-message";
 
 type DetailsScreenProps = RouteProp<RootStackParamList, "RecordingDetails">
 
@@ -41,7 +42,7 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
 
 
     const theData = useAudioStore((state: any) => state.journal)
-
+    const removeAudi = useAudioStore((state: any) => state.removeFromJournal)
     const showInfo = async () => {
         setLoading(true)
 
@@ -52,8 +53,12 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
         setJournal(theData[route.params.id])
 
 
+
+
         setLoading(false)
     }
+
+
 
     useEffect(() => {
         // console.log("journal running")
@@ -70,6 +75,9 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
 
                 const content = journ?.content;
 
+
+
+
                 try {
                     if (content) {
 
@@ -81,9 +89,10 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
                         await playbackObject.loadAsync({ uri: content });
                         await new Promise(resolve => setTimeout(resolve, 1000));
                         await playbackObject.playAsync();
-
                         setRecordingStatus('done');
+
                     }
+
 
                 } catch (error) {
                     console.error('An error occurred:', error);
@@ -110,6 +119,20 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
     }, []);
 
 
+
+    const Remove_Reco = (id: any) => {
+        // console.log(id)
+
+
+        removeAudi({index: id})
+        Toast.show({
+            type:"success",
+            text1:"sucess"
+        })
+
+        navigation.goBack()
+    }
+
     return (
         <BasicBackButtonLayout>
             <View>
@@ -118,7 +141,7 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
                 </View>
 
                 <Pressable
-                // onPress={toggleModal}
+                    onPress={() => Remove_Reco(route.params.id)}
                 >
                     <View style={apptw`flex-row justify-end mx-5 mb-1`}>
                         <View style={apptw`rounded-full bg-white  w-10 h-10`}>

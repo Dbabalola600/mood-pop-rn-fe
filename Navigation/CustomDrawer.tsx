@@ -30,6 +30,9 @@ export default function CustomDrawer(props: any) {
                     image: image,
                     username: username
                 });
+
+
+                // console.log(image)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -66,7 +69,7 @@ export default function CustomDrawer(props: any) {
                         style={apptw` `}
                     >
 
-                        {user.image === "" || user.image === undefined ? (
+                        {user.image === "" || user.image === undefined || user.image === null ? (
                             <>
                                 <Ionicons
                                     name="person-circle-sharp"

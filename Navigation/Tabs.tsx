@@ -86,7 +86,7 @@ const Tabs = () => {
                     <Pressable onPress={() => toggle()} style={apptw`px-5`}>
                         <View>
 
-                            {user === "" || user === undefined ? (
+                            {user === "" || user === undefined || user=== null ? (
                                 <>
 
                                     <Ionicons

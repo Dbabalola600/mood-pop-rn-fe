@@ -46,7 +46,13 @@ const AppStack = ({ navigation }: DashBoardProps) => {
 
                     title: "Dashboard",
                     headerShown: false,
-
+                    drawerIcon: () =>
+                    <MaterialIcons
+                    name="dashboard"
+                        size={24}
+                        color="black"
+                    />
+                ,
 
                 }}
             />
