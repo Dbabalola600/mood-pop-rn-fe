@@ -28,4 +28,7 @@ export type RootStackParamList ={
     UsersScreen: undefined
     FollowerScreen: undefined
     FollowingScreen: undefined
+    SeekHelpScreen: undefined
+    MaterialResourcesScreen: undefined
+
 }

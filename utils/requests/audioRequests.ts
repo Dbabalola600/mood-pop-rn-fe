@@ -7,15 +7,15 @@ import { SecureStorage } from "../../services/secureStorage"
 
 
 
-const journalRequest ={
+const audioRequest ={
     CreateJNote: async (
-
+        // userId: any,
         title: any,
         content: any
       ) => {
-    
 
         const user = await SecureStorage.getInst().getValueFor("userId")
+    
         let UserInfo = {
           userId: user,
           title: title,
@@ -37,13 +37,17 @@ const journalRequest ={
         return await axios
           .post(
             BASE_URL +
-            "/journal/create",
+            "/audio/create",
             body,
             {
               headers: {
               },
-              method: "POST"
+              method: "POST",
+              maxBodyLength: 10000000,
+              maxContentLength: 10000000
             }
+
+            
           )
     
     
@@ -65,17 +69,16 @@ const journalRequest ={
     
       //get max journal 
       getJournal: async (
-
+        // userId: any,
       ) => {
 
         const user = await SecureStorage.getInst().getValueFor("userId")
+
         let Info = {
           userId: user,
         }
         const body = Info
     
-
-        
     
         let res: {
           status: number;
@@ -90,7 +93,7 @@ const journalRequest ={
         return await axios
           .post(
             BASE_URL +
-            "/journal/getJournal",
+            "/audio/getJournal",
             body,
             {
               headers: {
@@ -117,7 +120,7 @@ const journalRequest ={
     
       //getting specific note from journal
       getJournalNote: async (
-
+        // userId: any,
         Nid: any
       ) => {
 
@@ -141,7 +144,7 @@ const journalRequest ={
         return await axios
           .get(
             BASE_URL +
-            "/journal/getNote",
+            "/audio/getNote",
     
             {
               params: {
@@ -170,7 +173,7 @@ const journalRequest ={
     
       //delete note
       delNote: async (
-
+        // userId: any,
         Nid: any
       ) => {
 
@@ -195,7 +198,7 @@ const journalRequest ={
         return await axios
           .post(
             BASE_URL +
-            "/journal/DelNote",
+            "/audio/DelNote",
             body,
     
             {
@@ -221,4 +224,4 @@ const journalRequest ={
 }
 
 
-export default  journalRequest
+export default  audioRequest

@@ -3,6 +3,7 @@ import axios from "axios"
 import {
     BASE_URL,
 } from "../lib/envvar"
+import { SecureStorage } from "../../services/secureStorage"
 
 
 
@@ -10,10 +11,12 @@ import {
 
 const postRequest = {
     GetUserPosts: async (
-        userId: any
+
     ) => {
+
+        const user = await SecureStorage.getInst().getValueFor("userId")
         let UserInfo = {
-            userId: userId
+            userId: user
         }
         const body = UserInfo
 
@@ -56,13 +59,14 @@ const postRequest = {
 
     //new post 
     CreatePost: async (
-        userId: any,
         post: any,
         category: any
     ) => {
 
+
+        const user = await SecureStorage.getInst().getValueFor("userId")
         let postInfo = {
-            userId: userId,
+            userId: user,
             post: post,
             category: category
         }
@@ -108,7 +112,7 @@ const postRequest = {
 
     //get posts of those you follow
     GetFollowingPost: async (
-        userId: any
+        // userId: any
     ) => {
         let res: {
             status: number;
@@ -119,6 +123,10 @@ const postRequest = {
             data: {},
             message: ""
         }
+
+        const user = await SecureStorage.getInst().getValueFor("userId")
+
+
         return await axios
             .get(
                 BASE_URL +
@@ -126,7 +134,7 @@ const postRequest = {
 
                 {
                     params: {
-                        userId: userId
+                        userId: user
                     },
                     // method: "GET"
                 }

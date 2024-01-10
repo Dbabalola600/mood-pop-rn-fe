@@ -4,15 +4,54 @@ import apptw from "../../../utils/lib/tailwind";
 import { JournalArr } from "../../../utils/lib/MockData";
 import JournalDisplay from "../../../components/Display/JournalDisplay";
 import PressAppText from "../../../components/Display/PressAppText";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import BlankNote from "../../../assets/BlankNote.svg"
+import audioRequest from "../../../utils/requests/audioRequests";
+import { useState, useEffect } from "react";
+import Loader from "../../../components/Display/Loader";
 
-
-
+type Journal = {
+    id: string,
+    title: string,
+    content: string,
+    Date: string
+}
 
 export default function RecordingComp() {
 
 
     const navigation = useNavigation()
+    const [isLoading, setLoading] = useState(false)
+    const isFocused = useIsFocused();
+    const [journ, setJournal] = useState<Journal[]>([])
+
+
+
+    const showInfo = async () => {
+        setLoading(true)
+
+        const response = await audioRequest.getJournal()
+        setJournal(response.data)
+
+
+        setLoading(false)
+    }
+
+
+
+    useEffect(() => {
+        // console.log("journal running")
+        if (isFocused) {
+            showInfo();
+        }
+    }, [isFocused]);
+
+
+    const NavClick = (id: string) => {
+        navigation.navigate("RecordingDetails", { id: id })
+    }
+
+
 
     return (
         <View>
@@ -43,24 +82,50 @@ export default function RecordingComp() {
 
 
 
-            <ScrollView
-                nestedScrollEnabled
-                showsVerticalScrollIndicator
-                style={apptw`h-[50]`}
-            >
-                {JournalArr.slice(0, 4).map((items, index) => (
-                    <View
+            {isLoading ?
+                <>
+                    <Loader />
+                </> :
 
-                    >
-                        <JournalDisplay
-                            date={items.content}
-                            title={items.title}
-                        />
+                <>
 
-                    </View>
-                ))}
+                    {journ.length < 1 ?
+                        <>
+                            <BlankNote
+                                width={"300"}
+                                height={"200"}
+                                style={apptw`mx-auto `}
+                            />
 
-            </ScrollView>
+                        </> :
+
+                        <>
+                            <ScrollView
+                                nestedScrollEnabled
+                                showsVerticalScrollIndicator
+                                style={apptw`h-[50]`}
+                            >
+                                {journ.slice(0, 4).map((items, index) => (
+                                    <View
+                                        key={index}
+                                    >
+                                        <JournalDisplay
+                                            onPress={() => NavClick(items.id)}
+                                            date={items.Date}
+                                            title={items.title}
+                                        />
+
+                                    </View>
+                                ))}
+
+                            </ScrollView>
+                        </>
+
+                    }
+
+                </>
+
+            }
         </View>
     )
 }

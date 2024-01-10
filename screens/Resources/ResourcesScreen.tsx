@@ -15,11 +15,11 @@ export default function ResourcesScreen({ navigation }: ResourcesProps) {
 
 
     const navigatetoseekhelp = () => {
-        // navigation.navigate("SeekHelp")
+        navigation.navigate("SeekHelpScreen")
     }
 
     const navigatetoresourceMat = () => {
-        // navigation.navigate("ResourceMat")
+        navigation.navigate("MaterialResourcesScreen")
     }
     return (
 

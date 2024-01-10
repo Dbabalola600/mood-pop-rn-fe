@@ -104,7 +104,7 @@ export default function NotificationScreen() {
                         <>
                             <View>
                                 <AppText
-                                    style={apptw`text-cetner mx-auto text-primary text-3xl mt-10`}
+                                    style={apptw`text-center mx-auto text-primary text-3xl mt-10`}
                                 >
 
                                     No Notifications

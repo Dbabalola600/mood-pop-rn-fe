@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "MoodPop",
+
+    "extra": {
+      "eas": {
+        "projectId": "c0a34bdc-a261-4aaa-b56e-df354dc6c4cf"
+      }
+    },
+    "android": {
+      "package": "com.dami600b.mood_pop_rn"
+    },
+    "ios": {
+      "bundleIdentifier": "dami"
+    }
+  }
+}

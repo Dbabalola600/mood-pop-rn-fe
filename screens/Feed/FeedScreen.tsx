@@ -9,13 +9,53 @@ import PostsDisplay from "../../components/Display/PostsDisplay";
 import { postsArr } from "../../utils/lib/MockData";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../allroutes";
+import { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
+import postRequest from "../../utils/requests/postRequest";
+import Loader from "../../components/Display/Loader";
 
 
 
 
 type FeedProps = NativeStackScreenProps<RootStackParamList, "FeedScreen">
 
+
+type Post = {
+    post: {
+        userId: string,
+        post: string
+        category: string
+        date: string
+    },
+    user: {
+        _id: string,
+        UserName: string,
+        email: string,
+        isVerified: string,
+        image: string
+    }
+
+}
+
+
+
 export default function FeedScreen({ navigation }: FeedProps) {
+    const [post, setPost] = useState<Post[]>([])
+    const [isLoading, setLoading] = useState(false)
+    const isFocused = useIsFocused();
+
+
+    const showInfo = async () => {
+        setLoading(true)
+
+        const response = await postRequest.GetFollowingPost()
+        // console.log(response)
+
+        setPost(response)
+
+        setLoading(false)
+    }
+
 
     const navigatetonewpost = () => {
         navigation.navigate("NewPost")
@@ -26,6 +66,13 @@ export default function FeedScreen({ navigation }: FeedProps) {
         navigation.navigate("UsersScreen")
     }
 
+
+    useEffect(() => {
+
+        if (isFocused) {
+            showInfo();
+        }
+    }, [isFocused]);
 
     return (
 
@@ -76,28 +123,51 @@ export default function FeedScreen({ navigation }: FeedProps) {
 
 
 
+                {isLoading ?
+
+                    <>
+                        <Loader />
+                    </> :
+                    <>
+                        <View style={apptw`mx-2 mt-10`}>
+
+                            {post.length < 1 ?
+                                <>
+                                    <BlankFeed
+                                        width={"300"}
+                                        height={"200"}
+                                        style={apptw`mx-auto `}
+                                    />
+                                </> :
+                                <>
+                                    {post.map((info, index) => (
+                                        <View
+                                            key={index}
+
+                                        >
+                                            <PostsDisplay
+                                                content={info.post.category}
+                                                date={info.post.date}
+                                                image={info.user.image}
+                                                name={info.user.UserName}
+                                            />
+                                        </View>
+                                    ))}
+                                </>
 
 
-                <View style={apptw`mx-2`}>
-                    <BlankFeed
-                        width={"300"}
-                        height={"200"}
-                        style={apptw`mx-auto `}
-                    />
+                            }
 
 
-                    {postsArr.map((item, index) => (
-                        <View>
-                            <PostsDisplay
-                                content={item.post}
-                                date={item.date}
-                                image={item.image}
-                                name={item.user}
-                            />
+
+
+
                         </View>
-                    ))}
+                    </>
 
-                </View>
+                }
+
+
             </View>
 
 

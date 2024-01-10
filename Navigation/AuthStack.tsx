@@ -23,6 +23,10 @@ import UpdateEmailScreen from "../screens/Settings/UpdateEmailScreen";
 import UpdateProfilePictureScreen from "../screens/Settings/UpdateProfilePictureScreen";
 import FindScreen from "../screens/Users/FindScreen";
 import UsersScreen from "../screens/Users/UsersScreen";
+import SeekHelpScreen from "../screens/Resources/SeekHelpScreen";
+import MaterialResourcesScreen from "../screens/Resources/MaterialResources";
+import WrittenDetails from "../screens/Journal/WrittenJournal/WrittenDetails";
+import RecordingDetails from "../screens/Journal/RecordJournal/RecordingDetails";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -151,6 +155,62 @@ const AuthStack = () => {
                 }}
             />
 
+
+
+            <Stack.Screen
+                name="WrittenDetails"
+                component={WrittenDetails}
+
+                options={{
+                    headerTitle: '',
+                    headerShown: true,
+                    headerTitleAlign: "center",
+
+                    headerStyle: {
+                        backgroundColor: "#EEEFFE"
+                    },
+                    headerLeft: () => (
+                        <Pressable onPress={() => navigation.goBack()} >
+                            <MaterialIcons
+                                name="keyboard-arrow-left"
+                                size={40}
+                                style={apptw`bg-transparent`}
+                                color="black"
+                            />
+                        </Pressable>
+                    )
+                }}
+            />
+
+
+
+            <Stack.Screen
+                name="RecordingDetails"
+                component={RecordingDetails}
+
+                options={{
+                    headerTitle: '',
+                    headerShown: true,
+                    headerTitleAlign: "center",
+
+                    headerStyle: {
+                        backgroundColor: "#EEEFFE"
+                    },
+                    headerLeft: () => (
+                        <Pressable onPress={() => navigation.goBack()} >
+                            <MaterialIcons
+                                name="keyboard-arrow-left"
+                                size={40}
+                                style={apptw`bg-transparent`}
+                                color="black"
+                            />
+                        </Pressable>
+                    )
+                }}
+            />
+
+
+
             <Stack.Screen
                 name="RecordJournalScreen"
                 component={RecordJournalScreen}
@@ -175,6 +235,60 @@ const AuthStack = () => {
                     )
                 }}
             />
+
+
+            <Stack.Screen
+                name="SeekHelpScreen"
+                component={SeekHelpScreen}
+
+                options={{
+                    headerTitle: 'Seek Help',
+                    headerShown: true,
+                    headerTitleAlign: "center",
+
+                    headerStyle: {
+                        backgroundColor: "#EEEFFE"
+                    },
+                    headerLeft: () => (
+                        <Pressable onPress={() => navigation.goBack()} >
+                            <MaterialIcons
+                                name="keyboard-arrow-left"
+                                size={40}
+                                style={apptw`bg-transparent`}
+                                color="black"
+                            />
+                        </Pressable>
+                    )
+                }}
+            />
+
+
+            <Stack.Screen
+                name="MaterialResourcesScreen"
+                component={MaterialResourcesScreen}
+
+                options={{
+                    headerTitle: 'Materials',
+                    headerShown: true,
+                    headerTitleAlign: "center",
+
+                    headerStyle: {
+                        backgroundColor: "#EEEFFE"
+                    },
+                    headerLeft: () => (
+                        <Pressable onPress={() => navigation.goBack()} >
+                            <MaterialIcons
+                                name="keyboard-arrow-left"
+                                size={40}
+                                style={apptw`bg-transparent`}
+                                color="black"
+                            />
+                        </Pressable>
+                    )
+                }}
+            />
+
+
             <Stack.Screen
                 name="SignUp"
                 component={SignUp}

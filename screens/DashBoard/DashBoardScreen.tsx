@@ -1,4 +1,4 @@
-import { View } from "react-native"
+import { ScrollView, View } from "react-native"
 import LoggedInLayout from "../../components/Layout/LoggedLayout"
 import apptw from "../../utils/lib/tailwind"
 import AppText from "../../components/Display/AppText"
@@ -10,12 +10,27 @@ import Blankcontent from "../../assets/Blankcontent.svg"
 import PostsDisplay from "../../components/Display/PostsDisplay"
 import { postsArr } from "../../utils/lib/MockData"
 import { SecureStorage } from "../../services/secureStorage"
+import { useIsFocused } from "@react-navigation/native"
+import postRequest from "../../utils/requests/postRequest"
+import Loader from "../../components/Display/Loader"
 
 type DashBoardProps = NativeStackScreenProps<RootStackParamList, "DashBoardScreen">
+
+
+type Posts = {
+    userId: string,
+    post: string
+    category: string
+    date: string
+}
 
 function DashBoardScreen({ navigation }: DashBoardProps) {
     const [user, Setuser] = useState<any>("");
     const [useSearch, SetSearch] = useState("")
+    const [post, setPost] = useState<Posts[]>([])
+    const isFocused = useIsFocused()
+    const [isLoading, setLoading] = useState(false)
+
 
     const search = (text: any) => {
         console.log(text)
@@ -23,7 +38,7 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
 
         SetSearch(text)
 
-        navigation.navigate("FindScreen", {find: text})
+        navigation.navigate("FindScreen", { find: text })
     }
 
     const [greeting, setGreeting] = useState("")
@@ -47,7 +62,11 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
         const fetchData = async () => {
             try {
                 let userName = await SecureStorage.getInst().getValueFor("userName");
-                Setuser(userName);
+                let image = await SecureStorage.getInst().getValueFor("image")
+                Setuser({
+                    userName,
+                    image
+                });
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -59,7 +78,18 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
     }, []);
 
 
+    const showInfo = async () => {
+        setLoading(true)
+        const response = await postRequest.GetUserPosts()
+        // console.log(response.data.data[0])
 
+        setPost(response.data.data)
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        showInfo()
+    }, [isFocused])
 
 
     return (
@@ -67,7 +97,7 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
             <View>
                 <View style={apptw`flex-row justify-between mx-2 mt-4 `}>
                     <AppText style={apptw`m`}>
-                        {greeting}  {user}
+                        {greeting}  {user.userName}
                     </AppText>
 
                     <View style={apptw`m`}>
@@ -99,23 +129,49 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
 
                 <View style={apptw`mx-2`}>
 
+                    {isLoading ?
+                        <>
+                            <Loader />
+
+                        </> :
+
+                        <>
+                            {post.length < 1 ?
+
+                                <Blankcontent
+                                    width={"300"}
+                                    height={"200"}
+                                    style={apptw`mx-auto `}
+                                /> :
+                                <ScrollView
+                                // nestedScrollEnabled
+                                // style={apptw`h-[180]`}
+                                >
+                                    {post.map((item, index) => (
+                                        <View
+                                            key={index}
+                                        >
+                                            <PostsDisplay
+                                                content={item.category}
+                                                date={item.date}
+                                                image={user.image}
+                                                name={user.userName}
+                                            />
+                                        </View>
+                                    ))}
+                                </ScrollView>
 
 
-                    <Blankcontent
-                        width={"300"}
-                        height={"200"}
-                        style={apptw`mx-auto `}
-                    />
-                    {postsArr.map((item, index) => (
-                        <View>
-                            <PostsDisplay
-                                content={item.post}
-                                date={item.date}
-                                image={item.image}
-                                name={item.user}
-                            />
-                        </View>
-                    ))}
+
+                            }
+
+                        </>
+
+
+                    }
+
+
+
 
                 </View>
 
