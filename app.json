@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "MoodPop Demo",
+    "name": "MoodPop",
     "icon": "./assets/MoodLogo.svg",
     "userInterfaceStyle": "light",
     "splash": {
