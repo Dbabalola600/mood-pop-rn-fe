@@ -135,7 +135,7 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
 
     return (
         <BasicBackButtonLayout>
-            <View>
+            
                 <View>
                     <AppText style={apptw`mx-auto  text-3xl`}> {journ?.title}</AppText>
                 </View>
@@ -183,7 +183,7 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
                         <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}</Text>
                     </View>
                 </View>
-            </View>
+            
         </BasicBackButtonLayout>
     )
 }
@@ -191,7 +191,7 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },

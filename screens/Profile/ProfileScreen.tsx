@@ -44,7 +44,7 @@ export default function ProfileScreen() {
 
                 <View>
 
-                    {user.image === "" || user.image === undefined ? (
+                    {user.image === "" || user.image === undefined || user.image === null ? (
                         <>
 
                             <Ionicons

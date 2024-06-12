@@ -40,7 +40,7 @@ const fetcher = async (url: string): Promise<MyData> => {
 
 
 const FindScreen = ({ navigation, route }: FindScreenRouteProp) => {
-    const [isButtLoading, setButtLoading] = useState(false)
+    const [isButtLoading, setButtLoading] = useState<string[]>([]);
     // const navigation = useNavigation()
     const isFocused = useIsFocused()
     // const [find, setFind] = useState("")
@@ -62,7 +62,7 @@ const FindScreen = ({ navigation, route }: FindScreenRouteProp) => {
     // console.log(data?.data.data)
 
     const SendReq = async (id: any) => {
-        setButtLoading(true)
+        setButtLoading((prev) => [...prev, id])
         const userId = await SecureStorage.getInst().getValueFor("userId")
 
 
@@ -86,7 +86,7 @@ const FindScreen = ({ navigation, route }: FindScreenRouteProp) => {
             })
         }
 
-        setButtLoading(false)
+        setButtLoading((prev) => prev.filter((itemId) => itemId !== id));
     }
     return (
         <LoggedInLayout>
@@ -126,12 +126,14 @@ const FindScreen = ({ navigation, route }: FindScreenRouteProp) => {
 
                                     data={data?.data.data}
                                     // keyExtractor={(item) => item._id}
-                                    renderItem={({ item }) => (
+                                    renderItem={({ item, index }) => (
                                         <UserSearchResult
                                             clicky={() => { SendReq(item._id) }}
                                             image={item.image}
                                             name={item.UserName}
-                                            text={isButtLoading ? "sending..." : "Request"}
+                                            text={
+                                              isButtLoading.includes(item._id) ? "sending..." : "Request"
+                                            }
                                         />
                                     )}
 

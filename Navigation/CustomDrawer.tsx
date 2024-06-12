@@ -53,7 +53,7 @@ export default function CustomDrawer(props: any) {
 
                     <View style={{ justifyContent: "center", alignItems: "center" }}>
                         <View>
-                            {user.image === "" || user.image === undefined ? (
+                            {user.image === "" || user.image === undefined || user.image === null ? (
                                 <Ionicons
                                     name="person-circle-sharp"
                                     size={100}

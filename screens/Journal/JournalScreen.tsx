@@ -68,7 +68,7 @@ export default function JournalScreen({ navigation }: JournalProps) {
                 </View>
                 <View style={apptw`mx-4`}>
 
-                    <NotesComp />
+                    <NotesComp  />
 
                     <RecordingComp />
                 </View>

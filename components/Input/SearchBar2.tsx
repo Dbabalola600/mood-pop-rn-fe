@@ -34,7 +34,9 @@ const SearchBar2 = (props: buttonProp) => {
         style={styles.input}
         placeholder="Search Users..."
         value={searchText}
+        onSubmitEditing={handlePress}
         onChangeText={setSearchText}
+         returnKeyType="search"
       />
 
       <Pressable

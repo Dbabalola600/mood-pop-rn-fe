@@ -6,14 +6,14 @@ import AppTextField from "../../components/Input/AppTextField";
 import LargeTextField from "../../components/Input/LargeTextField";
 import BasicBackButtonLayout from "../../components/Layout/BasicBackButtonLayout";
 import apptw from "../../utils/lib/tailwind";
-import { RootStackParamList } from "../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
 import postRequest from "../../utils/requests/postRequest";
 
 type Props = NativeStackScreenProps<
-    RootStackParamList,
+    HomeStackParamList,
     "NewPost"
 >;
 
@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<
 const NewPost = ({ navigation }: Props) => {
 
     const [isLoading, setLoading] = useState(false)
-    const { register, handleSubmit, watch, control, formState: { errors } } = useForm()
+    const { register, handleSubmit, watch, control, formState: { errors }, reset } = useForm()
 
 
 
@@ -37,6 +37,7 @@ const NewPost = ({ navigation }: Props) => {
                 type: "success",
                 text1: "Sucessful"
             })
+            reset();
             navigation.goBack()
         } else {
             Toast.show({
@@ -53,7 +54,7 @@ const NewPost = ({ navigation }: Props) => {
         <BasicBackButtonLayout>
             <View>
 
-                <ScrollView style={apptw`flex-1`}
+                <ScrollView style={apptw``}
                     contentContainerStyle={apptw`flex-grow`}
                 >
 

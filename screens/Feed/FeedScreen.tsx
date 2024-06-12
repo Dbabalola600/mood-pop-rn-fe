@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, KeyboardAvoidingView, Platform, ScrollView, FlatList } from "react-native";
+import { SafeAreaView, View, Text, KeyboardAvoidingView, Platform, ScrollView, FlatList, RefreshControl } from "react-native";
 import tw from "twrnc";
 import LoggedLayout from "../../components/Layout/LoggedLayout";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import postRequest from "../../utils/requests/postRequest";
 import Loader from "../../components/Display/Loader";
+import React from "react";
 
 
 
@@ -74,11 +75,29 @@ export default function FeedScreen({ navigation }: FeedProps) {
         }
     }, [isFocused]);
 
+
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        showInfo().then(() => setRefreshing(false));
+    }, []);
+
     return (
 
         <LoggedLayout>
 
-            <View>
+            <ScrollView
+             showsVerticalScrollIndicator={false}
+             refreshControl={
+                 <RefreshControl
+                     refreshing={refreshing}
+                     onRefresh={onRefresh}
+
+                     progressBackgroundColor="#0413BB"
+
+                 />
+             }
+            >
                 <View style={apptw`flex-row justify-between mx-4  pt-5`}>
 
                     <AppButtonWIcon
@@ -174,7 +193,7 @@ export default function FeedScreen({ navigation }: FeedProps) {
                 }
 
 
-            </View>
+            </ScrollView>
 
 
         </LoggedLayout>

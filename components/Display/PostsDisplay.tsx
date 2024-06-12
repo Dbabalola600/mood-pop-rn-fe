@@ -30,7 +30,7 @@ const PostsDisplay = (props: FeedProps) => {
 
 
                     <View style={apptw` flex-row `}>
-                        {props.image === undefined || props.image === "" ? (
+                        {props.image === undefined || props.image === ""  || props.image === null? (
                             <View>
                                 <Ionicons name="md-person-outline"
                                     size={50}

@@ -34,10 +34,18 @@ const Tabs = ({navigation}: HomeProps) => {
 
 
     const showNotif = async () => {
-        let id = await SecureStorage.getInst().getValueFor("userId");
+        let id = await SecureStorage.getInst()?.getValueFor("userId");
         const response = await userRequest.countNotification(id)
         setCount(response)
     }
+
+
+    useEffect(() => {
+        const intervalId = setInterval(showNotif, 1000);
+
+        // Clear interval on component unmount
+        return () => clearInterval(intervalId);
+    }, []);
 
     useEffect(() => {
 
@@ -53,7 +61,7 @@ const Tabs = ({navigation}: HomeProps) => {
 
         fetchData();
 
-        showNotif()
+        // showNotif()
     }, [isFocused]);
 
 
@@ -92,7 +100,7 @@ const Tabs = ({navigation}: HomeProps) => {
                     <Pressable onPress={() => toggle()} style={apptw`px-5`}>
                         <View>
 
-                            {user === "" || user === undefined ? (
+                            {user === "" || user === undefined  || user === null ? (
                                 <>
 
                                     <Ionicons

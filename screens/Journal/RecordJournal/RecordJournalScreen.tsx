@@ -23,7 +23,7 @@ import { useAudioStore } from "../../../utils/lib/data/audioJournal";
 
 type Props = NativeStackScreenProps<
     HomeStackParamList
-    
+
 >;
 
 
@@ -159,7 +159,7 @@ const RecordJournalScreen = ({ navigation }: Props) => {
 
 
 
-const [audiPath, setPath] = useState("")
+    const [audiPath, setPath] = useState("")
     async function handleRecordButtonPress() {
         if (recording) {
             const audioUri = await stopRecording(recording);
@@ -209,18 +209,18 @@ const [audiPath, setPath] = useState("")
         <BasicBackButtonLayout>
             <View>
 
-                <ScrollView style={apptw`flex-1`}
+                <ScrollView style={apptw``}
                     contentContainerStyle={apptw`flex-grow`}
                 >
 
                     <View style={apptw`mx-5`}>
                         <AppText style={apptw`text-center `}>
-                            Say something down why don't you?
+                            Say something why don't you?
                         </AppText>
                     </View>
                     <View style={apptw`mx-5`}>
                         <AppText style={apptw`text-[10px] text-primary`}>
-                            only you get to see this ❤️
+                            this is locally stored ❤️
                         </AppText>
                     </View>
 

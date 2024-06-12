@@ -4,12 +4,19 @@ import apptw from "../../../utils/lib/tailwind";
 import { JournalArr } from "../../../utils/lib/MockData";
 import JournalDisplay from "../../../components/Display/JournalDisplay";
 import PressAppText from "../../../components/Display/PressAppText";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { NavigationProp, useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import journalRequest from "../../../utils/requests/journalRequest";
-import Loader from "../../../components/Display/Loader";
-import BlankNote from "../../../assets/BlankNote.svg"
 
+import BlankNote from "../../../assets/BlankNote.svg"
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { HomeStackParamList } from "../../allroutes";
+import Loader from "../../../components/Display/Loader";
+
+
+
+
+type JournalProps = NativeStackScreenProps<HomeStackParamList>
 type Journal = {
     id: string,
     title: string,
@@ -18,7 +25,7 @@ type Journal = {
 }
 
 export default function NotesComp() {
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationProp<any>>();
     const [isLoading, setLoading] = useState(false)
     const isFocused = useIsFocused();
     const [journ, setJournal] = useState<Journal[]>([])
@@ -81,7 +88,15 @@ export default function NotesComp() {
 
             {isLoading ?
                 <>
-                    <Loader />
+                <View style={{
+                   
+                }}>
+                <Loader/>
+                {/* <AppText>
+                    Lon
+                </AppText> */}
+                </View>
+                 
                 </> :
 
                 <>

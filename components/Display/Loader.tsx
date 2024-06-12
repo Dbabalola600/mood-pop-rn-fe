@@ -3,7 +3,7 @@ import { View ,StyleSheet} from "react-native";
 import apptw from "../../utils/lib/tailwind";
 
 
-const Loader = () => {
+export default function Loader (){
 
 
     return (
@@ -19,11 +19,16 @@ const Loader = () => {
     
     const styles = StyleSheet.create({
       container: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 40,
       },
     });
     
-export default Loader;
+// export default Loader;
+
+
+
+  
+ 

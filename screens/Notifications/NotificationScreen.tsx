@@ -113,7 +113,7 @@ export default function NotificationScreen() {
                         </> :
                         <>
                             <View
-                                style={apptw`px-1 mt-7`}
+                                style={apptw`px-1 mt-7 mx-5`}
                             >
                                 {isUser.map((info) => (
 

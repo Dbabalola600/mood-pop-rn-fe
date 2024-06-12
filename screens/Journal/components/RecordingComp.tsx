@@ -1,16 +1,20 @@
 import { ScrollView, View } from "react-native";
 import AppText from "../../../components/Display/AppText";
 import apptw from "../../../utils/lib/tailwind";
-import { JournalArr } from "../../../utils/lib/data/MockData";
+
 import JournalDisplay from "../../../components/Display/JournalDisplay";
 import PressAppText from "../../../components/Display/PressAppText";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { NavigationProp, useIsFocused, useNavigation } from "@react-navigation/native";
 import BlankNote from "../../../assets/BlankNote.svg"
 import audioRequest from "../../../utils/requests/audioRequests";
 import { useState, useEffect } from "react";
 import Loader from "../../../components/Display/Loader";
 import { useAudioStore } from "../../../utils/lib/data/audioJournal";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { HomeStackParamList } from "../../allroutes";
 
+
+type JournalProps = NativeStackScreenProps<HomeStackParamList>
 type Journal = {
     id: string,
     title: string,
@@ -21,7 +25,7 @@ type Journal = {
 export default function RecordingComp() {
 
 
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationProp<any>>();
     const [isLoading, setLoading] = useState(false)
     const isFocused = useIsFocused();
     const [journ, setJournal] = useState<Journal[]>([])
