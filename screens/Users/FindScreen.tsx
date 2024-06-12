@@ -1,7 +1,7 @@
 import { RouteProp, useIsFocused, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
 import LoggedInLayout from "../../components/Layout/LoggedLayout";
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import AppText from "../../components/Display/AppText";
 import apptw from "../../utils/lib/tailwind";
 import UserSearchResult from "../../components/Display/UserSearchResult";
@@ -13,11 +13,12 @@ import { useSWRNativeRevalidate } from "@nandorojo/swr-react-native"
 import { BASE_URL } from "../../utils/lib/envvar";
 import useSWR from "swr";
 import Loader from "../../components/Display/Loader";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 
 
 
-type FindScreenRouteProp = RouteProp<RootStackParamList, 'FindScreen'>; // Replace ParamList with your actual param list
+type FindScreenRouteProp = NativeStackScreenProps<HomeStackParamList, 'FindScreen'>;
 
 type Props = {
     route: FindScreenRouteProp;
@@ -38,9 +39,9 @@ const fetcher = async (url: string): Promise<MyData> => {
 
 
 
-const FindScreen: React.FC<Props> = ({ route }) => {
+const FindScreen = ({ navigation, route }: FindScreenRouteProp) => {
     const [isButtLoading, setButtLoading] = useState(false)
-    const navigation = useNavigation()
+    // const navigation = useNavigation()
     const isFocused = useIsFocused()
     // const [find, setFind] = useState("")
 
@@ -77,7 +78,7 @@ const FindScreen: React.FC<Props> = ({ route }) => {
                 type: 'success',
                 text1: 'Request Sent',
             }),
-                navigation.navigate("DashBoardScreen")
+                navigation.navigate("DashBoard")
         } else {
             Toast.show({
                 type: 'error',
@@ -120,25 +121,21 @@ const FindScreen: React.FC<Props> = ({ route }) => {
                             </> :
                             <>
 
-                                <View
-                                >
-                                    {data?.data.data.map((info: any, index: any) => (
 
-                                        <View
-                                            key={info._id}
-                                        >
-                                            <UserSearchResult
-                                                text={isButtLoading ? "sending..." : "Request"}
-                                                clicky={() => { SendReq(info._id) }}
-                                                image={info.image}
-                                                name={info.UserName}
-                                            />
+                                <FlatList
 
+                                    data={data?.data.data}
+                                    // keyExtractor={(item) => item._id}
+                                    renderItem={({ item }) => (
+                                        <UserSearchResult
+                                            clicky={() => { SendReq(item._id) }}
+                                            image={item.image}
+                                            name={item.UserName}
+                                            text={isButtLoading ? "sending..." : "Request"}
+                                        />
+                                    )}
 
-                                        </View>
-
-                                    ))}
-                                </View>
+                                />
 
                             </>
 

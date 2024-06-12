@@ -16,11 +16,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DashBoardScreen from './screens/DashBoard/DashBoardScreen';
 import Tabs from './Navigation/Tabs';
 import AuthStack from './Navigation/AuthStack';
-import AppStack from './Navigation/AppStack';
+import AppStack from './Navigation/DrawerStack';
 import store from './state/store';
 
 import Toast, { BaseToast, BaseToastProps, ErrorToast } from 'react-native-toast-message';
 import { SWRConfig } from 'swr'
+import RootNavigator from './Navigation/RootNavigation';
 
 
 
@@ -90,7 +91,8 @@ export default function App() {
 
           <NavigationContainer>
             {/* <AppStack/> */}
-            <AuthStack />
+            {/* <AuthStack /> */}
+            <RootNavigator/>
           </NavigationContainer>
 
         </SafeAreaProvider>

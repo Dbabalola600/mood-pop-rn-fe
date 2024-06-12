@@ -1,16 +1,29 @@
+
+import { NavigatorScreenParams } from "@react-navigation/native";
+
+
+
 export type RootStackParamList ={
+    HomeNavigation: NavigatorScreenParams<HomeStackParamList>
+    AuthNavigator: NavigatorScreenParams<AuthStackParamList>;
+}
+
+export type AuthStackParamList ={
     Welcome: undefined,
     Test: undefined,
-    DashBoardScreen: undefined
     SignIn: undefined
     SignUp: undefined
-    ProfileScreen: undefined
     ForgotPassword: undefined
-    JournalScreen: undefined
-    ResourcesScreen: undefined
-    FeedScreen: undefined
-    NotificationScreen: undefined
-    SettingsScreen: undefined
+}
+
+export type HomeStackParamList ={
+    DashBoard: undefined
+    Profile: undefined
+    Journal: undefined
+    Resources: undefined
+    Feed: undefined
+    Notification: undefined
+    Settings: undefined
     WriteJournal: undefined
     RecordJournalScreen:undefined
     AllRecordingScreen: undefined
@@ -19,13 +32,12 @@ export type RootStackParamList ={
     WrittenDetails:{id:any}
     NewPost: undefined
     FindScreen:{find:any}
-
     ContactSupportScreen: undefined
     UpdateUsernameScreen: undefined
     UpdatePasswordScreen: undefined
     UpdateEmailScreen: undefined
     UpdateProfilePictureScreen: undefined
-    UsersScreen: undefined
+    AllUsersScreen: undefined
     FollowerScreen: undefined
     FollowingScreen: undefined
     SeekHelpScreen: undefined

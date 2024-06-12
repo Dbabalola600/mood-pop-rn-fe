@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import BasicBackButtonLayout from "../../components/Layout/BasicBackButtonLayout";
 import AppText from "../../components/Display/AppText";
 import { useIsFocused } from "@react-navigation/native";
@@ -51,52 +51,52 @@ export default function FollowerScreen() {
 
         <View>
 
-        {isLoading ?
-            <Loader /> :
+            {isLoading ?
+                <Loader /> :
 
-            <View
-                style={apptw`px-4 mt-5`}
-            >
+                <View
+                    style={apptw`px-4 mt-5`}
+                >
 
-                {isUser.length < 1 ?
-                    <>
-                        <People2
-                            width={"300"}
-                            height={"200"}
-                            style={apptw`mx-auto  mt-5`}
+                    {isUser.length < 1 ?
+                        <>
+                            <People2
+                                width={"300"}
+                                height={"200"}
+                                style={apptw`mx-auto  mt-5`}
 
-                        />
-                    </> :
+                            />
+                        </> :
 
-                    <>
-                        {isUser.map((info: any) => (
-                            <View
-                                key={info._id}
-                            >
+                        <>
 
-                                <UserSearchResult
-                                    clicky={() => { }}
-                                    image={info.image}
-                                    name={info.UserName}
-                                    text={"Remove"}
-                                />
+                            <FlatList
 
+                                data={isUser}
+                                // keyExtractor={(item) => item._id}
+                                renderItem={({ item }) => (
+                                    <UserSearchResult
+                                        clicky={() => { }}
+                                        image={item.image}
+                                        name={item.UserName}
+                                        text={"Remove"}
+                                    />
+                                )}
 
-                            </View>
-
-                        ))}
-                    </>
-                }
-
-
-            </View>
-
-        }
+                            />
+                          
+                        </>
+                    }
 
 
+                </View>
+
+            }
 
 
-    </View>
+
+
+        </View>
 
 
     )

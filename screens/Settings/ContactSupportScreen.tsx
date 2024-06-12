@@ -10,12 +10,12 @@ import AppButton from "../../components/Display/AppButton";
 import settingsRequest from "../../utils/requests/settingsRequest";
 import Toast from "react-native-toast-message";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
 
 
 
 
-type MyProps = NativeStackScreenProps<RootStackParamList, "ContactSupportScreen">
+type MyProps = NativeStackScreenProps<HomeStackParamList, "ContactSupportScreen">
 
 export default function ContactSupportScreen({ navigation }: MyProps) {
 
@@ -36,7 +36,7 @@ export default function ContactSupportScreen({ navigation }: MyProps) {
                     type: "success",
                     text1: "Sent"
                 })
-                navigation.navigate("DashBoardScreen")
+                navigation.navigate("DashBoard")
                 break;
             }
             default: {

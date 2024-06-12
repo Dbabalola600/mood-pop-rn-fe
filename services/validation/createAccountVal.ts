@@ -3,12 +3,7 @@ import { Schema, z } from "zod";
 
 export const createYourAccountSchema = z
     .object({
-        fName: z.string({
-            required_error: "Your name is required",
-        }),
-        lName: z.string({
-            required_error: "Your name is required",
-        }),
+      
         userName: z.string({
             required_error: "Your username is required",
         }),

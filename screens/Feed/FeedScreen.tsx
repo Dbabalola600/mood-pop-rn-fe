@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { SafeAreaView, View, Text, KeyboardAvoidingView, Platform, ScrollView, FlatList } from "react-native";
 import tw from "twrnc";
 import LoggedLayout from "../../components/Layout/LoggedLayout";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -8,7 +8,7 @@ import BlankFeed from "../../assets/BlankFeed.svg"
 import PostsDisplay from "../../components/Display/PostsDisplay";
 import { postsArr } from "../../utils/lib/MockData";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
 import { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import postRequest from "../../utils/requests/postRequest";
@@ -17,7 +17,7 @@ import Loader from "../../components/Display/Loader";
 
 
 
-type FeedProps = NativeStackScreenProps<RootStackParamList, "FeedScreen">
+type FeedProps = NativeStackScreenProps<HomeStackParamList>
 
 
 type Post = {
@@ -63,7 +63,7 @@ export default function FeedScreen({ navigation }: FeedProps) {
 
 
     const navigateToFriends = () => {
-        navigation.navigate("UsersScreen")
+        navigation.navigate("AllUsersScreen")
     }
 
 
@@ -140,19 +140,25 @@ export default function FeedScreen({ navigation }: FeedProps) {
                                     />
                                 </> :
                                 <>
-                                    {post.map((info, index) => (
-                                        <View
-                                            key={index}
 
-                                        >
+                                    <FlatList
+                                        contentContainerStyle={{
+                                            marginHorizontal: 15
+                                        }}
+                                        scrollEnabled
+                                        nestedScrollEnabled
+                                        showsVerticalScrollIndicator
+                                        data={post}
+                                        keyExtractor={(item, index) => index.toString()}
+                                        renderItem={({ item }) => (
                                             <PostsDisplay
-                                                content={info.post.category}
-                                                date={info.post.date}
-                                                image={info.user.image}
-                                                name={info.user.UserName}
+                                                content={item.post.category}
+                                                date={item.post.date}
+                                                image={item.user.image}
+                                                name={item.user.UserName}
                                             />
-                                        </View>
-                                    ))}
+                                        )}
+                                    />
                                 </>
 
 

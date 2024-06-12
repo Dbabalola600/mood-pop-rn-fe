@@ -7,6 +7,7 @@ import {
     Pressable,
     ScrollView,
     TouchableWithoutFeedback,
+    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
@@ -22,10 +23,13 @@ const BasicBackButtonLayout = ({ children }: BasicBackButtonLayoutProp) => {
     const navigation = useNavigation();
 
     return (
-        <TouchableWithoutFeedback
-            onPress={() => (Platform.OS != "web" ? Keyboard.dismiss() : null)}
+        <View
+        style={{
+            flex:1
+        }}
+            // onPress={() => (Platform.OS != "web" ? Keyboard.dismiss() : null)}
         >
-            <ScrollView
+            <View
                 style={apptw`bg-secondary   flex-1 shadow-md`}
                 // edges={["top", "left", "right"]}
             >
@@ -39,8 +43,8 @@ const BasicBackButtonLayout = ({ children }: BasicBackButtonLayoutProp) => {
                 </Pressable> */}
 
                 {children}
-            </ScrollView>
-        </TouchableWithoutFeedback>
+            </View>
+        </View>
     );
 };
 

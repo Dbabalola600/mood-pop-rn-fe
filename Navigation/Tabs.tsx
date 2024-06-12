@@ -15,16 +15,18 @@ import NotificationScreen from "../screens/Notifications/NotificationScreen";
 import { useEffect, useState } from "react";
 import { SecureStorage } from "../services/secureStorage";
 import userRequest from "../utils/requests/userRequests";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { HomeStackParamList } from "../screens/allroutes";
 
 
 
 const Tab = createBottomTabNavigator();
-
-const Tabs = () => {
+type HomeProps = NativeStackScreenProps<HomeStackParamList>
+const Tabs = ({navigation}: HomeProps) => {
     const [user, Setuser] = useState<any>("");
     const [count, setCount] = useState<number>(0)
     const isFocused = useIsFocused();
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
     const toggle = () => {
         navigation.dispatch(DrawerActions.toggleDrawer());
     }
@@ -76,7 +78,7 @@ const Tabs = () => {
                 },
                 headerRight: () => (
                     <Pressable
-                        onPress={() => { navigation.navigate("SettingsScreen") }} style={apptw`px-5`}
+                        onPress={() => { navigation.navigate("Settings") }} style={apptw`px-5`}
                     >
                         <Feather
                             name="settings"

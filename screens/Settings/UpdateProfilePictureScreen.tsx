@@ -9,8 +9,14 @@ import apptw from "../../utils/lib/tailwind";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import * as ImageManipulator from 'expo-image-manipulator';
+import settingsRequest from "../../utils/requests/settingsRequest";
+import Toast from "react-native-toast-message";
+import { SecureStorage } from "../../services/secureStorage";
+import { HomeStackParamList } from "../allroutes";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export default function UpdateProfilePictureScreen() {
+type BoardProps = NativeStackScreenProps<HomeStackParamList>
+export default function UpdateProfilePictureScreen({ navigation }: BoardProps) {
     const [isButtonLoading, setButtonLoading] = useState(false)
     const [image, setImage] = useState<string | null>(null);
     const [base64Image, setBase64Image] = useState<string | null>(null);
@@ -63,36 +69,80 @@ export default function UpdateProfilePictureScreen() {
 
 
 
-    const submitItem = () => {
+    const submitItem = async () => {
+        setButtonLoading(true)
+
         const image = {
             image: base64Image
         }
+        await settingsRequest.updateImage(base64Image).then(async (res) => {
+            // console.log(res)
+            switch (res.data.status) {
+                case 402: {
+                    Toast.show({
+                        type: "error",
+                        text1: `${res.data.message}`
+                    })
+                    break;
+                }
+                case 200: {
+                    Toast.show({
+                        type: "success",
+                        text1: "Successful",
+                        // text2: "proceed to login"
+                    })
+                    // navigateToSignIn()
+                    await SecureStorage.getInst().save("image", base64Image!)
+                    navigation.navigate("DashBoard")
+                    break;
+                }
 
+                default: {
+                    Toast.show({
+                        type: "error",
+                        text1: "Unknown error try again later",
+                        text2: ""
+                    })
+                    break;
 
-        console.log(image)
+                }
+            }
+        })
+
+        // console.log(image.image)
+        setButtonLoading(false)
     }
 
     return (
         <LoggedInLayout>
             <View
-                style={apptw`  mt-20`}
+                style={apptw`  mt-20 mx-5`}
             >
+
+
+                <>
+
+
+                    {base64Image && (
+                        <Image source={{
+                            uri: base64Image,
+                            width: 400,
+                            height: 200,
+
+                        }}
+
+                            style={{
+                                marginBottom: 20,
+
+                                alignSelf: "center"
+                            }} />
+                    )}
+                </>
+
 
 
                 <View
                     style={apptw``}
-                >
-
-
-                    {base64Image && (
-                        <Image source={{ uri: base64Image }} style={{ width: 400, height: 200, marginBottom: 20 }} />
-                    )}
-                </View>
-
-
-
-                <View
-                    style={apptw`mx-5`}
                 >
                     <AppButton
                         onPress={pickImage}

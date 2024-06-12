@@ -4,11 +4,11 @@ import LoggedLayout from "../../components/Layout/LoggedLayout";
 import AppText from "../../components/Display/AppText";
 import apptw from "../../utils/lib/tailwind";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
 
 
 
-type MyProps = NativeStackScreenProps<RootStackParamList, "SettingsScreen">
+type MyProps = NativeStackScreenProps<HomeStackParamList, "Settings">
 
 
 export default function SettingsScreen({ navigation }: MyProps) {

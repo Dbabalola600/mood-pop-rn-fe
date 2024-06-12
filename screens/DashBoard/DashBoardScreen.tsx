@@ -1,20 +1,20 @@
-import { ScrollView, View } from "react-native"
+import { FlatList, ScrollView, View } from "react-native"
 import LoggedInLayout from "../../components/Layout/LoggedLayout"
 import apptw from "../../utils/lib/tailwind"
 import AppText from "../../components/Display/AppText"
 import SearchBar2 from "../../components/Input/SearchBar2"
 import { useEffect, useState } from "react"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { RootStackParamList } from "../allroutes"
+import { HomeStackParamList, RootStackParamList } from "../allroutes"
 import Blankcontent from "../../assets/Blankcontent.svg"
 import PostsDisplay from "../../components/Display/PostsDisplay"
-import { postsArr } from "../../utils/lib/MockData"
+import { JournalArr, postsArr } from "../../utils/lib/MockData"
 import { SecureStorage } from "../../services/secureStorage"
 import { useIsFocused } from "@react-navigation/native"
 import postRequest from "../../utils/requests/postRequest"
 import Loader from "../../components/Display/Loader"
 
-type DashBoardProps = NativeStackScreenProps<RootStackParamList, "DashBoardScreen">
+type DashBoardProps = NativeStackScreenProps<HomeStackParamList>
 
 
 type Posts = {
@@ -75,7 +75,7 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
         fetchData();
         setGreetingBasedOnTime();
 
-    }, []);
+    }, [isFocused]);
 
 
     const showInfo = async () => {
@@ -94,8 +94,8 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
 
     return (
         <LoggedInLayout>
-            <View>
-                <View style={apptw`flex-row justify-between mx-2 mt-4 `}>
+           
+                <View style={apptw`flex-row justify-between mx-5 mt-4 `}>
                     <AppText style={apptw`m`}>
                         {greeting}  {user.userName}
                     </AppText>
@@ -106,14 +106,14 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
                 </View>
 
 
-                <View>
+                <View style={apptw`mx-2`}>
                     <SearchBar2 onPress={search} />
                 </View>
 
 
 
                 <View
-                    style={apptw`mt-5 pb-5`}
+                    style={apptw`mt-5 pb-5 mx-5`}
                 >
                     <AppText
                         style={apptw`text-bold text-2xl `}
@@ -127,55 +127,42 @@ function DashBoardScreen({ navigation }: DashBoardProps) {
                 </View>
 
 
-                <View style={apptw`mx-2`}>
-
-                    {isLoading ?
+                
+                    {isLoading ? (
+                        <Loader />
+                    ) : (
                         <>
-                            <Loader />
-
-                        </> :
-
-                        <>
-                            {post.length < 1 ?
-
+                            {post.length === 0 ? (
                                 <Blankcontent
                                     width={"300"}
                                     height={"200"}
-                                    style={apptw`mx-auto `}
-                                /> :
-                                <ScrollView
-                                // nestedScrollEnabled
-                                // style={apptw`h-[180]`}
-                                >
-                                    {post.map((item, index) => (
-                                        <View
-                                            key={index}
-                                        >
-                                            <PostsDisplay
-                                                content={item.category}
-                                                date={item.date}
-                                                image={user.image}
-                                                name={user.userName}
-                                            />
-                                        </View>
-                                    ))}
-                                </ScrollView>
-
-
-
-                            }
-
+                                    style={apptw`mx-auto`}
+                                />
+                            ) : (
+                                <FlatList
+                                    contentContainerStyle={{
+                                        marginHorizontal: 15
+                                    }}
+                                    scrollEnabled
+                                    nestedScrollEnabled
+                                    showsVerticalScrollIndicator
+                                    data={post}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item }) => (
+                                        <PostsDisplay
+                                            content={item.category}
+                                            date={item.date}
+                                            image={user.image}
+                                            name={user.userName}
+                                        />
+                                    )}
+                                />
+                            )}
                         </>
-
-
-                    }
-
+                    )}
 
 
 
-                </View>
-
-            </View>
         </LoggedInLayout>
     )
 }

@@ -15,45 +15,24 @@ const LoggedInLayout = ({ children }: LoggedInLayoutProp) => {
 
 
     return (
-        <TouchableWithoutFeedback
-            onPress={() => (Platform.OS != "web" ? Keyboard.dismiss() : null)}
+        <View
+            style={{
+                flex: 1
+            }}
+        // onPress={() => (Platform.OS != "web" ? Keyboard.dismiss() : null)}
         >
 
-            <ScrollView
+            <View
                 style={apptw.style(`bg-[#EEEFFE]  flex-1 shadow-md `)}
-                contentContainerStyle={apptw`flex-grow`}
+            // style={{
 
-            // edges={["top", "left", "right", "bottom"]}
+            // }}
             >
-
-                {/* <View style={tw`flex-row justify-between py-4 px-6`} >
-
-                    <Pressable onPress={() => navigation.toggleDrawer()} style={tw.style("",)}>
-                        <SimpleLineIcons
-                            name="menu"
-                            size={20}
-                            style={tw`bg-white`}
-                            color="black"
-                        />
-                    </Pressable>
-
-                    <Pressable 
-                    // onPress={navigateToNotifications} 
-                    style={tw.style("",)}>
-                        <AntDesign
-                            name="bells"
-                            size={20}
-                            style={tw`bg-white`}
-                            color="black"
-                        />
-                    </Pressable>
-
-                </View> */}
 
 
                 {children}
-            </ScrollView>
-        </TouchableWithoutFeedback>
+            </View>
+        </View>
     )
 
 

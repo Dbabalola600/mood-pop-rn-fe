@@ -6,7 +6,7 @@ import AppText from "../components/Display/AppText";
 import AppTextField from "../components/Input/AppTextField";
 import BasicBackButtonLayout from "../components/Layout/BasicBackButtonLayout";
 import apptw from "../utils/lib/tailwind";
-import { RootStackParamList } from "./allroutes";
+import { AuthStackParamList, RootStackParamList } from "./allroutes";
 import PressAppText from "../components/Display/PressAppText";
 import { loginwithEmailFormType, loginwithEmailSchema } from "../services/validation/LoginVal";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ import Toast from "react-native-toast-message";
 
 
 type SignInScreen = NativeStackScreenProps<
-    RootStackParamList,
+    AuthStackParamList,
     "SignIn"
 >;
 
@@ -35,7 +35,7 @@ const SignIn = ({ navigation }: SignInScreen) => {
 
 
     const navigatetoDashBoard = () => {
-        navigation.navigate("DashBoardScreen")
+        // navigation.navigate("DashBoardScreen")
     }
 
 
@@ -52,7 +52,7 @@ const SignIn = ({ navigation }: SignInScreen) => {
                 type:"success",
                 text1:`Successful Login`
             })
-            navigatetoDashBoard()
+            // navigatetoDashBoard()
             // console.log("success")
         }
         if (user.isError && !user.isLoading) {

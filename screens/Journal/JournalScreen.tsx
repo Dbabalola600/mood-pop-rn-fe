@@ -7,8 +7,8 @@ import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import AppButtonWIcon from "../../components/Display/AppButtonWIcon";
 import apptw from "../../utils/lib/tailwind";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../allroutes";
-type JournalProps = NativeStackScreenProps<RootStackParamList, "JournalScreen">
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
+type JournalProps = NativeStackScreenProps<HomeStackParamList>
 
 
 export default function JournalScreen({ navigation }: JournalProps) {

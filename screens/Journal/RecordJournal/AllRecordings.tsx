@@ -3,13 +3,14 @@ import tw from "twrnc";
 import LoggedLayout from "../../../components/Layout/LoggedLayout";
 import AppText from "../../../components/Display/AppText";
 import JournalDisplay from "../../../components/Display/JournalDisplay";
-import { JournalArr } from "../../../utils/lib/MockData";
+
 import apptw from "../../../utils/lib/tailwind";
 import audioRequest from "../../../utils/requests/audioRequests";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import Loader from "../../../components/Display/Loader";
 import BlankNote from "../../../assets/BlankNote.svg"
+import { useAudioStore } from "../../../utils/lib/data/audioJournal";
 
 
 
@@ -17,7 +18,7 @@ type Journal = {
     id: string,
     title: string,
     content: string,
-    Date: string
+    date: string
 }
 
 
@@ -30,12 +31,13 @@ export default function AllRecordingScreen() {
     const [journ, setJournal] = useState<Journal[]>([])
 
 
+    const Userjournals = useAudioStore((state: any) => state.journal)
+
 
     const showInfo = async () => {
         setLoading(true)
 
-        const response = await audioRequest.getJournal()
-        setJournal(response.data)
+        setJournal(Userjournals)
 
 
         setLoading(false)
@@ -92,19 +94,22 @@ export default function AllRecordingScreen() {
                                     showsVerticalScrollIndicator
                                     style={apptw`pb-10`}
                                 >
-                                    {journ.map((items, index) => (
+                                    {journ.map((items, index:any) => (
                                         <View
                                             key={index}
                                         >
                                             <JournalDisplay
-                                                onPress={() => NavClick(items.id)}
-                                                date={items.Date}
+                                                  onPress={() => NavClick(index)}
+                                                date={new Date(items.date).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric'
+                                                  })}
                                                 title={items.title}
                                             />
 
                                         </View>
                                     ))}
-
                                 </ScrollView>
                             </>
 

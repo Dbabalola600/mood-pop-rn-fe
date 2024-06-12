@@ -1,7 +1,7 @@
 import { RouteProp, useIsFocused, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../../allroutes";
 import BasicBackButtonLayout from "../../../components/Layout/BasicBackButtonLayout";
-import { Pressable, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { useEffect, useState } from "react";
 import journalRequest from "../../../utils/requests/journalRequest";
 import AppText from "../../../components/Display/AppText";
@@ -11,7 +11,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 
 
-type DetailsScreenProps = RouteProp<RootStackParamList, "WrittenDetails">
+type DetailsScreenProps = RouteProp<HomeStackParamList, "WrittenDetails">
 
 
 type Journal = {
@@ -84,8 +84,8 @@ const WrittenDetails: React.FC<Props> = ({ route }) => {
                 </Pressable>
 
 
-                <View
-                    style={apptw`mx-5`}>
+                <ScrollView
+                    style={apptw`mx-5 mb-10`}>
                     <AppText>
                         Date: {journ?.Date}
                     </AppText>
@@ -98,7 +98,7 @@ const WrittenDetails: React.FC<Props> = ({ route }) => {
                             {journ?.content}
                         </AppText>
                     </View>
-                </View>
+                </ScrollView>
             </View>
         </BasicBackButtonLayout>
     )

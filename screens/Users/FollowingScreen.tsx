@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import BasicBackButtonLayout from "../../components/Layout/BasicBackButtonLayout";
 import AppText from "../../components/Display/AppText";
 import { useEffect, useState } from "react";
@@ -64,7 +64,7 @@ export default function FollowingScreen() {
         showInfo()
     }, [isFocused])
 
-   
+
     return (
 
         <View>
@@ -87,22 +87,22 @@ export default function FollowingScreen() {
                         </> :
 
                         <>
-                            {isUser.map((info: any) => (
-                                <View
-                                    key={info._id}
-                                >
 
+                            <FlatList
+
+                                data={isUser}
+                                // keyExtractor={(item) => item._id}
+                                renderItem={({ item }) => (
                                     <UserSearchResult
                                         clicky={() => { }}
-                                        image={info.image}
-                                        name={info.UserName}
+                                        image={item.image}
+                                        name={item.UserName}
                                         text={"Remove"}
                                     />
+                                )}
 
-
-                                </View>
-
-                            ))}
+                            />
+                          
                         </>
                     }
 

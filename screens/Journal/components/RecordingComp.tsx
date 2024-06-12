@@ -1,7 +1,7 @@
 import { ScrollView, View } from "react-native";
 import AppText from "../../../components/Display/AppText";
 import apptw from "../../../utils/lib/tailwind";
-import { JournalArr } from "../../../utils/lib/MockData";
+import { JournalArr } from "../../../utils/lib/data/MockData";
 import JournalDisplay from "../../../components/Display/JournalDisplay";
 import PressAppText from "../../../components/Display/PressAppText";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -9,12 +9,13 @@ import BlankNote from "../../../assets/BlankNote.svg"
 import audioRequest from "../../../utils/requests/audioRequests";
 import { useState, useEffect } from "react";
 import Loader from "../../../components/Display/Loader";
+import { useAudioStore } from "../../../utils/lib/data/audioJournal";
 
 type Journal = {
     id: string,
     title: string,
     content: string,
-    Date: string
+    date: string
 }
 
 export default function RecordingComp() {
@@ -26,12 +27,12 @@ export default function RecordingComp() {
     const [journ, setJournal] = useState<Journal[]>([])
 
 
+    const Userjournals = useAudioStore((state: any) => state.journal)
 
     const showInfo = async () => {
         setLoading(true)
 
-        const response = await audioRequest.getJournal()
-        setJournal(response.data)
+        setJournal(Userjournals)
 
 
         setLoading(false)
@@ -105,13 +106,17 @@ export default function RecordingComp() {
                                 showsVerticalScrollIndicator
                                 style={apptw`h-[50]`}
                             >
-                                {journ.slice(0, 4).map((items, index) => (
+                                {journ.slice(0, 4).map((items, index:any) => (
                                     <View
                                         key={index}
                                     >
                                         <JournalDisplay
-                                            onPress={() => NavClick(items.id)}
-                                            date={items.Date}
+                                            onPress={() => NavClick(index)}
+                                            date={new Date(items.date).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric'
+                                              })}
                                             title={items.title}
                                         />
 

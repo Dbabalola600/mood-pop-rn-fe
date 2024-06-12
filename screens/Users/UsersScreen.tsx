@@ -2,7 +2,7 @@ import { View } from "react-native";
 import BasicBackButtonLayout from "../../components/Layout/BasicBackButtonLayout";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { RootStackParamList } from "../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
 import SearchBar2 from "../../components/Input/SearchBar2";
 import apptw from "../../utils/lib/tailwind";
 import PressAppText from "../../components/Display/PressAppText";
@@ -12,7 +12,7 @@ import FollowerScreen from "./FollowerScreen";
 
 
 
-type MyProps = NativeStackScreenProps<RootStackParamList, "UsersScreen">
+type MyProps = NativeStackScreenProps<HomeStackParamList>
 
 export default function UsersScreen({ navigation }: MyProps) {
 

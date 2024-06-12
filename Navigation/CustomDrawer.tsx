@@ -3,19 +3,19 @@ import { View, Text, ImageBackground, Image, Pressable } from "react-native";
 import AppText from "../components/Display/AppText";
 import apptw from "../utils/lib/tailwind";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { SecureStorage } from "../services/secureStorage";
 
 export default function CustomDrawer(props: any) {
     const [user, Setuser] = useState<any>([]);
     const navigation = useNavigation()
-
+    const isFocused = useIsFocused()
 
 
     const loggedOut = () => {
         SecureStorage.getInst().clearAll()
-        navigation.navigate("SignIn")
+        // navigation.navigate("SignIn")
 
     }
 
@@ -38,91 +38,63 @@ export default function CustomDrawer(props: any) {
         fetchData();
 
 
-    }, []);
+    }, [isFocused]);
     return (
         <DrawerContentScrollView
             contentContainerStyle={{
-                // paddingBottom: 40,
-                // paddingTop: 90,
                 backgroundColor: "#BAC0FA",
-                // display: "flex",
                 height: "100%",
-                // width:"90%",
-                // flex: 1,
-                // justifyContent: "space-between"
             }}
             {...props}
         >
-            <View
-                style={apptw`flex flex-col justify-between  h-[50%]`}
-            >
-                <View
+            <View style={{ flex: 1, justifyContent: "space-between" }}>
 
+                <View>
 
-                    style={apptw`mx-auto my-auto `}
-                >
-
-                    <View
-                        style={apptw` `}
-                    >
-
-                        {user.image === "" || user.image === undefined ? (
-                            <>
+                    <View style={{ justifyContent: "center", alignItems: "center" }}>
+                        <View>
+                            {user.image === "" || user.image === undefined ? (
                                 <Ionicons
                                     name="person-circle-sharp"
                                     size={100}
-                                    // style={{ marginRight: 15 }}
                                     color="black"
                                 />
-                            </>
-                        ) : (
-                            <>
-
+                            ) : (
                                 <Image
-                                    style={apptw`rounded-full w-30 h-30`}
-                                    // height={5}
-                                    source={{ uri: `${user.image}` }}
+                                    style={{ borderRadius: 50, width: 100, height: 100 }}
+                                    source={{ uri: user.image }}
                                 />
+                            )}
+                        </View>
+                        <AppText style={{ textAlign: "center", marginTop: 10 }}>
+                            {user.username}
+                        </AppText>
 
-                            </>
-                        )
-                        }
 
                     </View>
-
-                    <AppText style={apptw`mx-auto`}>
-                        {user.username}
-                    </AppText>
-
-
-
+                    <View style={{
+                        marginTop: 20
+                    }}>
+                        <DrawerItemList {...props} />
+                    </View>
                 </View>
 
-                <View
 
-                    style={apptw`flex justify-between`}
-                >
-                    <DrawerItemList {...props} />
+                <View style={{
+                    marginBottom: 50
+                }}>
 
                     <Pressable
                         onPress={loggedOut}
-                        style={apptw`bg- flex-row px-5 pt-5`}
+                        style={{ flexDirection: "row", padding: 15, alignItems: "center" }}
                     >
-                        <SimpleLineIcons name="logout" size={24} color="black" />
-                        <AppText
-                            style={apptw`mx-10`}
-                        >
+                        <SimpleLineIcons name="logout" size={24} color="red" />
+                        <AppText style={{ marginLeft: 10 , color:"red"}}>
                             Logout
                         </AppText>
                     </Pressable>
                 </View>
-
-
-
-
             </View>
-
-
         </DrawerContentScrollView>
     )
 }

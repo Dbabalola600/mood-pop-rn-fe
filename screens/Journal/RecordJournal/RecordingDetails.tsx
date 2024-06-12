@@ -1,5 +1,5 @@
 import { RouteProp, useIsFocused, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../../allroutes";
 import BasicBackButtonLayout from "../../../components/Layout/BasicBackButtonLayout";
 import { Pressable, View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useEffect, useState } from "react";
@@ -12,15 +12,17 @@ import apptw from "../../../utils/lib/tailwind";
 import { Audio, } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { decode } from 'base-64';
+import { useAudioStore } from "../../../utils/lib/data/audioJournal";
+import Toast from "react-native-toast-message";
 
-type DetailsScreenProps = RouteProp<RootStackParamList, "RecordingDetails">
+type DetailsScreenProps = RouteProp<HomeStackParamList, "RecordingDetails">
 
 
 type Journal = {
     id: string,
     title: string,
     content: string,
-    Date: string
+    date: string | any
 }
 
 
@@ -38,15 +40,25 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
     const [recordingStatus, setRecordingStatus] = useState('idle');
     const [audioPermission, setAudioPermission] = useState(null);
 
+
+    const theData = useAudioStore((state: any) => state.journal)
+    const removeAudi = useAudioStore((state: any) => state.removeFromJournal)
     const showInfo = async () => {
         setLoading(true)
 
-        const response = await audioRequest.getJournalNote(route.params.id)
-        setJournal(response)
+
+
+        // console.log(theData[route.params.id])
+
+        setJournal(theData[route.params.id])
+
+
 
 
         setLoading(false)
     }
+
+
 
     useEffect(() => {
         // console.log("journal running")
@@ -56,41 +68,70 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
     }, [isFocused]);
 
     async function handleRecordButtonPress() {
-        if (recordingStatus === 'idle') {
-            setRecordingStatus('playing');
-            const playbackObject = new Audio.Sound();
-            const content = journ?.content;
+        const playbackObject = new Audio.Sound();
+        if (playbackObject) {
+            if (recordingStatus === 'idle') {
+                setRecordingStatus('playing');
 
-            try {
-                if (content) {
-                    const base64Data = content.replace('data:audio/aac;base64,', '');
-                    const binaryContent = decode(base64Data);
-                    const tempFilePath = `${FileSystem.documentDirectory}temp_audio.caf`;
+                const content = journ?.content;
 
-                    await FileSystem.writeAsStringAsync(tempFilePath, binaryContent, { encoding: FileSystem.EncodingType.Base64 });
 
-                    await Audio.setAudioModeAsync({
-                        allowsRecordingIOS: false,
-                        playsInSilentModeIOS: true,
-                    });
 
-                    await playbackObject.loadAsync({ uri: tempFilePath });
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    await playbackObject.playAsync();
+
+                try {
+                    if (content) {
+
+                        await Audio.setAudioModeAsync({
+                            allowsRecordingIOS: false,
+                            playsInSilentModeIOS: true,
+                        });
+
+                        await playbackObject.loadAsync({ uri: content });
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        await playbackObject.playAsync();
+                        setRecordingStatus('done');
+
+                    }
+
+
+                } catch (error) {
+                    console.error('An error occurred:', error);
+                    setRecordingStatus('idle');
                 }
-
-                setRecordingStatus('done');
-            } catch (error) {
-                console.error('An error occurred:', error);
+            } else {
                 setRecordingStatus('idle');
+                // Add logic to stop the recording or playback
+                await playbackObject.stopAsync();
             }
-        } else {
-            setRecordingStatus('idle');
-            // Add logic to stop the recording or playback
         }
+
     }
 
 
+    useEffect(() => {
+        const playbackObject = new Audio.Sound();
+        return () => {
+            // Clean up the resources when the component unmounts
+            if (playbackObject) {
+                playbackObject.unloadAsync();
+            }
+        };
+    }, []);
+
+
+
+    const Remove_Reco = (id: any) => {
+        // console.log(id)
+
+
+        removeAudi({index: id})
+        Toast.show({
+            type:"success",
+            text1:"sucess"
+        })
+
+        navigation.goBack()
+    }
 
     return (
         <BasicBackButtonLayout>
@@ -100,7 +141,7 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
                 </View>
 
                 <Pressable
-                // onPress={toggleModal}
+                    onPress={() => Remove_Reco(route.params.id)}
                 >
                     <View style={apptw`flex-row justify-end mx-5 mb-1`}>
                         <View style={apptw`rounded-full bg-white  w-10 h-10`}>
@@ -124,7 +165,11 @@ const RecordingDetails: React.FC<Props> = ({ route }) => {
                 <View
                     style={apptw`mx-5`}>
                     <AppText>
-                        Date: {journ?.Date}
+                        Date: {new Date(journ?.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}
                     </AppText>
 
 

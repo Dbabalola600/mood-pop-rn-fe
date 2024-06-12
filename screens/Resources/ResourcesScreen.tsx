@@ -2,13 +2,13 @@ import { SafeAreaView, View, Text, KeyboardAvoidingView, Platform, ScrollView } 
 import tw from "twrnc";
 import LoggedLayout from "../../components/Layout/LoggedLayout";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../allroutes";
+import { HomeStackParamList, RootStackParamList } from "../allroutes";
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import AppButtonWIcon from "../../components/Display/AppButtonWIcon";
 import apptw from "../../utils/lib/tailwind";
 import AppText from "../../components/Display/AppText";
 
-type ResourcesProps = NativeStackScreenProps<RootStackParamList, "ResourcesScreen">
+type ResourcesProps = NativeStackScreenProps<HomeStackParamList>
 
 
 export default function ResourcesScreen({ navigation }: ResourcesProps) {
